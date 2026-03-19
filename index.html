@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Graphics Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep:     #080C14;
+  --bg-mid:      #0D1320;
+  --bg-card:     #111827;
+  --bg-hover:    #161f30;
+  --border:      rgba(148,163,184,0.12);
+  --border-active: rgba(99,179,237,0.45);
+  --accent-blue: #63B3ED;
+  --accent-gold: #F6C90E;
+  --accent-teal: #4FD1C5;
+  --accent-rose: #FC8181;
+  --accent-sage: #68D391;
+  --text-h:      #F0F4FF;
+  --text-b:      #94A3B8;
+  --text-dim:    #4A5568;
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.5);
+  --shadow-hover:0 8px 40px rgba(0,0,0,0.7);
+  --r:           10px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Crimson Pro', Georgia, serif;
+  background:var(--bg-deep);
+  color:var(--text-b);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ─── LAYOUT ─── */
+.layout { display:flex; min-height:100vh; }
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  width:272px; min-height:100vh; position:fixed; left:0; top:0;
+  background:var(--bg-mid);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  z-index:200; overflow-y:auto;
+}
+.sidebar-logo {
+  padding:28px 24px 22px;
+  border-bottom:1px solid var(--border);
+}
+.logo-mark {
+  font-family:'Cinzel', serif;
+  font-size:11px; font-weight:700;
+  letter-spacing:4px; color:var(--accent-blue);
+  text-transform:uppercase; margin-bottom:6px;
+  opacity:0.8;
+}
+.logo-title {
+  font-family:'Cinzel', serif;
+  font-size:16px; font-weight:900;
+  color:var(--text-h); line-height:1.3;
+  letter-spacing:1px;
+}
+.logo-sub {
+  font-family:'JetBrains Mono', monospace;
+  font-size:9px; color:var(--text-dim);
+  letter-spacing:3px; margin-top:6px;
+  text-transform:uppercase;
+}
+
+.nav-section { padding:8px 0; }
+.nav-group { margin-bottom:2px; }
+
+.nav-group-btn {
+  width:100%; display:flex; align-items:center; gap:10px;
+  padding:11px 20px; background:none; border:none;
+  color:var(--text-b); font-family:'Cinzel', serif;
+  font-size:10px; font-weight:600; letter-spacing:2px;
+  text-transform:uppercase; text-align:left;
+  cursor:pointer; transition:all 0.2s ease;
+  border-left:3px solid transparent;
+}
+.nav-group-btn:hover {
+  color:var(--text-h); background:rgba(99,179,237,0.06);
+  border-left-color:var(--accent-blue);
+}
+.nav-group-btn.open {
+  color:var(--accent-blue); background:rgba(99,179,237,0.08);
+  border-left-color:var(--accent-blue);
+}
+.nav-icon { font-size:14px; opacity:0.7; }
+.nav-chev { margin-left:auto; font-size:10px; transition:transform 0.25s; opacity:0.5; }
+.nav-group-btn.open .nav-chev { transform:rotate(90deg); }
+
+.nav-sub-list { display:none; padding:2px 0 6px 0; }
+.nav-sub-list.open { display:block; }
+
+.nav-sub-item {
+  padding:8px 20px 8px 46px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px; color:var(--text-dim);
+  cursor:pointer; transition:all 0.2s;
+  letter-spacing:0.5px; display:flex; align-items:center; gap:8px;
+  border-left:3px solid transparent;
+}
+.nav-sub-item:hover { color:var(--accent-teal); border-left-color:var(--accent-teal); background:rgba(79,209,197,0.05); }
+.nav-sub-item.active { color:var(--accent-teal); border-left-color:var(--accent-teal); }
+
+.nav-sub-sub { display:none; }
+.nav-sub-sub.open { display:block; }
+.nav-sub-sub-item {
+  padding:6px 20px 6px 58px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:9px; color:var(--text-dim);
+  cursor:pointer; transition:all 0.2s;
+  letter-spacing:0.5px;
+  border-left:3px solid transparent;
+}
+.nav-sub-sub-item:hover { color:var(--accent-gold); border-left-color:var(--accent-gold); }
+
+.sidebar-bottom {
+  margin-top:auto; padding:18px 24px;
+  border-top:1px solid var(--border);
+}
+.progress-wrap { margin-bottom:10px; }
+.progress-label {
+  font-family:'JetBrains Mono', monospace;
+  font-size:9px; color:var(--text-dim);
+  letter-spacing:2px; margin-bottom:7px;
+  text-transform:uppercase;
+}
+.progress-track { height:3px; background:rgba(255,255,255,0.06); border-radius:2px; }
+.progress-fill {
+  height:100%; width:20%; border-radius:2px;
+  background:linear-gradient(90deg, var(--accent-blue), var(--accent-teal));
+  transition:width 0.6s ease;
+}
+
+/* ─── MAIN ─── */
+.main { margin-left:272px; flex:1; }
+
+/* ─── HOME ─── */
+.home-page, .topic-page { display:none; }
+.home-page.active, .topic-page.active { display:block; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height:92vh; display:flex; align-items:center;
+  padding:80px 64px;
+  position:relative; overflow:hidden;
+}
+.hero-bg {
+  position:absolute; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse 60% 60% at 75% 40%, rgba(99,179,237,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 25% 70%, rgba(79,209,197,0.04) 0%, transparent 60%);
+}
+.hero-geo {
+  position:absolute; right:60px; top:50%; transform:translateY(-50%);
+  opacity:0.12; z-index:0;
+}
+.hero-content { position:relative; z-index:1; max-width:640px; }
+.hero-eyebrow {
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px; letter-spacing:5px;
+  color:var(--accent-teal); text-transform:uppercase;
+  margin-bottom:22px; opacity:0.9;
+}
+.hero-h1 {
+  font-family:'Cinzel', serif;
+  font-size:clamp(32px,4.5vw,58px); font-weight:900;
+  color:var(--text-h); line-height:1.15;
+  margin-bottom:12px;
+}
+.hero-h1 span {
+  color:var(--accent-blue);
+}
+.hero-tagline {
+  font-family:'Crimson Pro', serif;
+  font-size:22px; font-style:italic;
+  color:var(--text-b); line-height:1.7;
+  margin-bottom:36px; font-weight:300;
+}
+.hero-btns { display:flex; gap:14px; flex-wrap:wrap; }
+.btn-primary {
+  padding:12px 28px;
+  background:var(--accent-blue); border:none; border-radius:6px;
+  color:var(--bg-deep); font-family:'Cinzel', serif;
+  font-size:10px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; cursor:pointer;
+  transition:all 0.25s ease;
+  box-shadow:0 2px 12px rgba(99,179,237,0.3);
+}
+.btn-primary:hover { background:#90CDF4; box-shadow:0 4px 20px rgba(99,179,237,0.45); transform:translateY(-2px); }
+.btn-outline {
+  padding:12px 28px;
+  background:transparent;
+  border:1px solid var(--border-active); border-radius:6px;
+  color:var(--accent-blue); font-family:'Cinzel', serif;
+  font-size:10px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; cursor:pointer;
+  transition:all 0.25s ease;
+}
+.btn-outline:hover { background:rgba(99,179,237,0.08); transform:translateY(-2px); }
+
+.hero-stats { display:flex; gap:48px; margin-top:52px; padding-top:40px; border-top:1px solid var(--border); }
+.stat-val { font-family:'Cinzel', serif; font-size:30px; font-weight:900; color:var(--text-h); }
+.stat-lbl { font-family:'JetBrains Mono', monospace; font-size:9px; color:var(--text-dim); letter-spacing:3px; margin-top:4px; text-transform:uppercase; }
+
+/* ─── SEARCH ─── */
+.search-bar {
+  padding:0 64px 48px;
+  max-width:560px;
+}
+.search-wrap {
+  position:relative;
+}
+.search-input {
+  width:100%; padding:13px 20px 13px 44px;
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:8px; color:var(--text-h);
+  font-family:'JetBrains Mono', monospace; font-size:12px;
+  outline:none; transition:all 0.2s;
+}
+.search-input:focus { border-color:var(--border-active); background:var(--bg-hover); }
+.search-input::placeholder { color:var(--text-dim); }
+.search-ico { position:absolute; left:16px; top:50%; transform:translateY(-50%); color:var(--text-dim); font-size:15px; pointer-events:none; }
+
+/* ─── SECTION ─── */
+.section { padding:0 64px 72px; }
+.sec-eyebrow {
+  font-family:'JetBrains Mono', monospace;
+  font-size:9px; letter-spacing:5px; color:var(--accent-gold);
+  text-transform:uppercase; margin-bottom:10px;
+  display:flex; align-items:center; gap:12px;
+}
+.sec-eyebrow::after { content:''; display:block; width:40px; height:1px; background:var(--accent-gold); opacity:0.5; }
+.sec-title {
+  font-family:'Cinzel', serif;
+  font-size:clamp(18px,2.5vw,28px); font-weight:700;
+  color:var(--text-h); margin-bottom:32px;
+}
+
+/* ─── CATEGORY HEADER ─── */
+.cat-header {
+  display:flex; align-items:center; gap:14px;
+  padding:22px 0 20px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:28px;
+}
+.cat-icon { font-size:20px; }
+.cat-name {
+  font-family:'Cinzel', serif;
+  font-size:15px; font-weight:700; color:var(--text-h);
+  letter-spacing:2px;
+}
+.cat-count {
+  font-family:'JetBrains Mono', monospace;
+  font-size:9px; color:var(--text-dim);
+  letter-spacing:2px; margin-left:auto;
+}
+
+/* ─── CARDS GRID ─── */
+.cards-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:20px; margin-bottom:52px;
+}
+.card {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden;
+  cursor:pointer; transition:all 0.25s ease;
+  box-shadow:var(--shadow-card);
+}
+.card:hover {
+  border-color:var(--border-active);
+  box-shadow:var(--shadow-hover);
+  transform:translateY(-4px);
+}
+.card-thumb {
+  height:160px; overflow:hidden;
+  background:var(--bg-mid);
+  display:flex; align-items:center; justify-content:center;
+  border-bottom:1px solid var(--border);
+  padding:16px;
+}
+.card-thumb svg { width:100%; height:100%; }
+.card-body { padding:18px 20px; }
+.card-eyebrow {
+  font-family:'JetBrains Mono', monospace;
+  font-size:9px; letter-spacing:3px;
+  text-transform:uppercase; margin-bottom:7px;
+}
+.card-title { font-family:'Cinzel', serif; font-size:13px; font-weight:700; color:var(--text-h); margin-bottom:8px; letter-spacing:0.5px; }
+.card-desc { font-size:13px; color:var(--text-b); line-height:1.65; margin-bottom:14px; }
+.card-footer { display:flex; align-items:center; gap:10px; }
+.badge {
+  padding:3px 10px; border-radius:20px;
+  font-family:'JetBrains Mono', monospace; font-size:9px; letter-spacing:1px;
+}
+.badge-blue  { background:rgba(99,179,237,0.12); color:var(--accent-blue); border:1px solid rgba(99,179,237,0.25); }
+.badge-teal  { background:rgba(79,209,197,0.12); color:var(--accent-teal); border:1px solid rgba(79,209,197,0.25); }
+.badge-gold  { background:rgba(246,201,14,0.1);  color:var(--accent-gold); border:1px solid rgba(246,201,14,0.2); }
+.badge-rose  { background:rgba(252,129,129,0.1); color:var(--accent-rose); border:1px solid rgba(252,129,129,0.2); }
+.badge-sage  { background:rgba(104,211,145,0.1); color:var(--accent-sage); border:1px solid rgba(104,211,145,0.2); }
+
+/* ─── POLYGON CARDS (shape select) ─── */
+.polygon-shapes-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:16px; margin-bottom:32px;
+}
+.shape-card {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--r); padding:24px 16px;
+  cursor:pointer; transition:all 0.25s;
+  text-align:center;
+}
+.shape-card:hover { border-color:var(--border-active); transform:translateY(-3px); box-shadow:var(--shadow-hover); }
+.shape-card svg { width:72px; height:72px; margin-bottom:12px; }
+.shape-name { font-family:'Cinzel', serif; font-size:12px; font-weight:700; color:var(--text-h); letter-spacing:1px; }
+.shape-sides { font-family:'JetBrains Mono', monospace; font-size:9px; color:var(--text-dim); margin-top:4px; letter-spacing:2px; }
+
+/* ─── TOPIC PAGE ─── */
+.topic-hero {
+  padding:48px 64px 36px;
+  border-bottom:1px solid var(--border);
+  background:var(--bg-mid);
+}
+.breadcrumb {
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px; color:var(--text-dim);
+  letter-spacing:2px; margin-bottom:18px;
+  display:flex; align-items:center; gap:8px;
+}
+.breadcrumb span { color:var(--accent-blue); cursor:pointer; }
+.breadcrumb span:hover { color:var(--text-h); }
+.topic-title {
+  font-family:'Cinzel', serif;
+  font-size:clamp(22px,3.5vw,40px); font-weight:900;
+  color:var(--text-h); margin-bottom:12px; line-height:1.2;
+}
+.topic-sub { font-family:'Crimson Pro', serif; font-size:17px; color:var(--text-b); line-height:1.7; max-width:680px; font-style:italic; }
+
+/* ─── METHOD TABS ─── */
+.method-tabs {
+  display:flex; gap:0; padding:32px 64px 0;
+  border-bottom:1px solid var(--border);
+}
+.method-tab {
+  padding:12px 24px; border:none; background:none;
+  font-family:'Cinzel', serif; font-size:10px; font-weight:700;
+  letter-spacing:2px; color:var(--text-dim);
+  cursor:pointer; transition:all 0.2s;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
+  text-transform:uppercase;
+}
+.method-tab:hover { color:var(--text-h); }
+.method-tab.active { color:var(--accent-blue); border-bottom-color:var(--accent-blue); }
+
+/* ─── CONSTRUCTION AREA ─── */
+.construction {
+  display:grid; grid-template-columns:1fr 360px;
+  min-height:560px;
+}
+.diagram-area {
+  padding:36px 48px;
+  border-right:1px solid var(--border);
+}
+.diagram-box {
+  background:var(--bg-mid); border:1px solid var(--border);
+  border-radius:var(--r); padding:24px;
+  min-height:420px; display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.diagram-label {
+  position:absolute; top:14px; left:18px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:9px; color:var(--text-dim); letter-spacing:2px;
+}
+.controls {
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  margin-top:18px;
+}
+.ctrl {
+  padding:8px 18px; background:var(--bg-card);
+  border:1px solid var(--border); border-radius:6px;
+  color:var(--text-b); font-family:'JetBrains Mono', monospace;
+  font-size:10px; cursor:pointer; transition:all 0.2s; letter-spacing:1px;
+}
+.ctrl:hover, .ctrl.active { border-color:var(--border-active); color:var(--accent-blue); background:var(--bg-hover); }
+.speed-row { display:flex; align-items:center; gap:8px; margin-left:auto; font-family:'JetBrains Mono', monospace; font-size:9px; color:var(--text-dim); letter-spacing:2px; }
+input[type=range] { -webkit-appearance:none; width:80px; height:3px; background:var(--border); border-radius:2px; outline:none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:13px; height:13px; background:var(--accent-blue); border-radius:50%; cursor:pointer; }
+.dl-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:10px 22px; background:transparent;
+  border:1px solid rgba(104,211,145,0.35); border-radius:6px;
+  color:var(--accent-sage); font-family:'JetBrains Mono', monospace;
+  font-size:10px; cursor:pointer; transition:all 0.2s; letter-spacing:1px;
+  text-decoration:none; margin-top:16px;
+}
+.dl-btn:hover { background:rgba(104,211,145,0.07); border-color:var(--accent-sage); }
+
+/* ─── STEPS ─── */
+.steps-panel {
+  background:var(--bg-mid);
+  padding:32px 28px; overflow-y:auto; max-height:560px;
+}
+.steps-heading {
+  font-family:'Cinzel', serif; font-size:10px; font-weight:700;
+  letter-spacing:3px; color:var(--text-dim); text-transform:uppercase;
+  margin-bottom:22px;
+}
+.step-item {
+  display:flex; gap:14px; margin-bottom:16px;
+  padding:14px; border-radius:8px;
+  border:1px solid transparent; cursor:pointer; transition:all 0.2s;
+}
+.step-item.active { background:rgba(99,179,237,0.07); border-color:rgba(99,179,237,0.25); }
+.step-item.done   { border-color:rgba(104,211,145,0.2); }
+.step-num {
+  width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono', monospace; font-size:10px; flex-shrink:0;
+  background:var(--bg-card); border:1px solid var(--border); color:var(--text-dim);
+  transition:all 0.2s;
+}
+.step-item.active .step-num { background:var(--accent-blue); color:var(--bg-deep); border-color:var(--accent-blue); }
+.step-item.done   .step-num { background:rgba(104,211,145,0.15); color:var(--accent-sage); border-color:var(--accent-sage); }
+.step-title { font-family:'Cinzel', serif; font-size:12px; font-weight:600; color:var(--text-h); margin-bottom:5px; }
+.step-desc { font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--text-dim); line-height:1.65; }
+
+/* ─── QUIZ ─── */
+.quiz-area { padding:48px 64px; border-top:1px solid var(--border); background:var(--bg-mid); }
+.quiz-card {
+  max-width:680px; background:var(--bg-card);
+  border:1px solid var(--border); border-radius:var(--r); padding:36px;
+}
+.quiz-q { font-family:'Cinzel', serif; font-size:15px; color:var(--text-h); margin-bottom:24px; line-height:1.6; }
+.quiz-opts { display:flex; flex-direction:column; gap:10px; margin-bottom:22px; }
+.quiz-opt {
+  display:flex; align-items:center; gap:14px;
+  padding:13px 18px; background:var(--bg-mid);
+  border:1px solid var(--border); border-radius:8px;
+  cursor:pointer; transition:all 0.2s;
+  font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-b);
+  text-align:left;
+}
+.quiz-opt:hover { border-color:var(--border-active); color:var(--text-h); background:var(--bg-hover); }
+.quiz-opt.correct { background:rgba(104,211,145,0.08); border-color:var(--accent-sage); color:var(--accent-sage); }
+.quiz-opt.wrong   { background:rgba(252,129,129,0.08); border-color:var(--accent-rose); color:var(--accent-rose); }
+.quiz-dot { width:16px; height:16px; border-radius:50%; border:1px solid var(--text-dim); flex-shrink:0; transition:all 0.2s; }
+.quiz-fb {
+  display:none; padding:13px 18px; border-radius:8px;
+  font-family:'JetBrains Mono', monospace; font-size:11px; line-height:1.65; margin-bottom:16px;
+}
+.quiz-fb.show { display:block; }
+.quiz-fb.ok  { background:rgba(104,211,145,0.07); border:1px solid rgba(104,211,145,0.25); color:var(--accent-sage); }
+.quiz-fb.no  { background:rgba(252,129,129,0.07); border:1px solid rgba(252,129,129,0.25); color:var(--accent-rose); }
+
+/* ─── VIDEO SECTION ─── */
+.video-section { padding:48px 64px 72px; }
+.video-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px; }
+.video-card {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden;
+  cursor:pointer; transition:all 0.25s; text-decoration:none; display:block;
+}
+.video-card:hover { border-color:var(--border-active); transform:translateY(-3px); box-shadow:var(--shadow-hover); }
+.video-thumb {
+  height:136px; background:var(--bg-mid);
+  display:flex; align-items:center; justify-content:center;
+  border-bottom:1px solid var(--border); position:relative; overflow:hidden;
+}
+.yt-icon {
+  width:48px; height:48px; background:rgba(255,0,0,0.85);
+  border-radius:10px; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:18px; transition:transform 0.2s;
+  box-shadow:0 4px 16px rgba(255,0,0,0.4);
+}
+.video-card:hover .yt-icon { transform:scale(1.1); }
+.video-deco {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  opacity:0.07; font-size:100px; color:var(--text-h);
+}
+.video-body { padding:14px 16px; }
+.video-title { font-family:'Cinzel', serif; font-size:12px; font-weight:600; color:var(--text-h); margin-bottom:6px; line-height:1.4; }
+.video-ch { font-family:'JetBrains Mono', monospace; font-size:9px; color:var(--accent-rose); letter-spacing:1px; }
+
+/* ─── POLYGON METHODS PAGE ─── */
+.poly-methods-area { padding:0; }
+.poly-method-tabs { display:flex; gap:0; padding:28px 64px 0; border-bottom:1px solid var(--border); }
+
+/* ─── DIVIDER ─── */
+.section-divider { height:1px; background:var(--border); margin:0 64px 48px; }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--text-dim); border-radius:3px; }
+
+/* ─── BURST ─── */
+.burst-p {
+  position:fixed; pointer-events:none; z-index:9999;
+  width:7px; height:7px; border-radius:50%;
+  animation:bst 0.7s ease-out forwards;
+}
+@keyframes bst {
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}
+}
+
+/* ─── MOBILE ─── */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%); transition:transform 0.3s;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .hero, .section, .topic-hero{padding-left:20px; padding-right:20px;}
+  .construction{grid-template-columns:1fr;}
+  .method-tabs, .poly-method-tabs{padding-left:20px; overflow-x:auto;}
+  .search-bar, .video-section, .quiz-area, .diagram-area{padding-left:20px; padding-right:20px;}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">Engineering Graphics</div>
+    <div class="logo-title">Graphics Hub</div>
+    <div class="logo-sub">Visual Learning System</div>
+  </div>
+  <nav class="nav-section">
+
+    <!-- CONIC SECTIONS -->
+    <div class="nav-group">
+      <button class="nav-group-btn" onclick="toggleNav(this,'nav-conic')">
+        <span class="nav-icon">◯</span> Conic Sections <span class="nav-chev">›</span>
+      </button>
+      <div class="nav-sub-list" id="nav-conic">
+        <!-- Ellipse -->
+        <div class="nav-sub-item" onclick="toggleSubNav(this,'nav-ellipse')">▸ Ellipse <span style="margin-left:auto;font-size:9px;opacity:0.5">›</span></div>
+        <div class="nav-sub-sub" id="nav-ellipse">
+          <div class="nav-sub-sub-item" onclick="showTopic('e-cc')">Concentric Circle</div>
+          <div class="nav-sub-sub-item" onclick="showTopic('e-arc')">Intersecting Arc</div>
+          <div class="nav-sub-sub-item" onclick="showTopic('e-ob')">Oblong Method</div>
+        </div>
+        <!-- Parabola -->
+        <div class="nav-sub-item" onclick="toggleSubNav(this,'nav-parabola')">▸ Parabola <span style="margin-left:auto;font-size:9px;opacity:0.5">›</span></div>
+        <div class="nav-sub-sub" id="nav-parabola">
+          <div class="nav-sub-sub-item" onclick="showTopic('p-rect')">Rectangle Method</div>
+          <div class="nav-sub-sub-item" onclick="showTopic('p-tang')">Tangent Method</div>
+        </div>
+        <!-- Hyperbola -->
+        <div class="nav-sub-item" onclick="toggleSubNav(this,'nav-hyp')">▸ Hyperbola <span style="margin-left:auto;font-size:9px;opacity:0.5">›</span></div>
+        <div class="nav-sub-sub" id="nav-hyp">
+          <div class="nav-sub-sub-item" onclick="showTopic('h-gen')">General Method</div>
+          <div class="nav-sub-sub-item" onclick="showTopic('h-rect')">Rectangular Hyperbola</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCALES -->
+    <div class="nav-group">
+      <button class="nav-group-btn" onclick="toggleNav(this,'nav-scales')">
+        <span class="nav-icon">◫</span> Scales <span class="nav-chev">›</span>
+      </button>
+      <div class="nav-sub-list" id="nav-scales">
+        <div class="nav-sub-item" onclick="showTopic('plain-scale')">▸ Plain Scale</div>
+        <div class="nav-sub-item" onclick="showTopic('diagonal-scale')">▸ Diagonal Scale</div>
+      </div>
+    </div>
+
+    <!-- POLYGONS -->
+    <div class="nav-group">
+      <button class="nav-group-btn" onclick="toggleNav(this,'nav-poly')">
+        <span class="nav-icon">⬡</span> Polygons <span class="nav-chev">›</span>
+      </button>
+      <div class="nav-sub-list" id="nav-poly">
+        <div class="nav-sub-item" onclick="showPolygonMethods('pentagon')">▸ Pentagon (5)</div>
+        <div class="nav-sub-item" onclick="showPolygonMethods('hexagon')">▸ Hexagon (6)</div>
+        <div class="nav-sub-item" onclick="showPolygonMethods('heptagon')">▸ Heptagon (7)</div>
+        <div class="nav-sub-item" onclick="showPolygonMethods('octagon')">▸ Octagon (8)</div>
+      </div>
+    </div>
+
+    <!-- CYCLOIDS -->
+    <div class="nav-group">
+      <button class="nav-group-btn" onclick="toggleNav(this,'nav-cyc')">
+        <span class="nav-icon">⟳</span> Cycloids <span class="nav-chev">›</span>
+      </button>
+      <div class="nav-sub-list" id="nav-cyc">
+        <div class="nav-sub-item" onclick="showTopic('cycloid')">▸ Standard Cycloid</div>
+        <div class="nav-sub-item" onclick="showTopic('epicycloid')">▸ Epicycloid</div>
+        <div class="nav-sub-item" onclick="showTopic('hypocycloid')">▸ Hypocycloid</div>
+      </div>
+    </div>
+
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="progress-wrap">
+      <div class="progress-label">Overall Progress</div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<main class="main">
+
+  <!-- ══ HOME PAGE ══ -->
+  <div class="home-page active" id="home-page">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <svg class="hero-geo" width="420" height="420" viewBox="0 0 420 420" fill="none">
+        <circle cx="210" cy="210" r="200" stroke="#63B3ED" stroke-width="0.5"/>
+        <circle cx="210" cy="210" r="150" stroke="#4FD1C5" stroke-width="0.5"/>
+        <circle cx="210" cy="210" r="100" stroke="#63B3ED" stroke-width="0.5"/>
+        <ellipse cx="210" cy="210" rx="200" ry="100" stroke="#F6C90E" stroke-width="0.5"/>
+        <line x1="10" y1="210" x2="410" y2="210" stroke="#63B3ED" stroke-width="0.5"/>
+        <line x1="210" y1="10" x2="210" y2="410" stroke="#63B3ED" stroke-width="0.5"/>
+        <polygon points="210,50 350,290 70,290" stroke="#4FD1C5" stroke-width="0.5" fill="none"/>
+        <polygon points="210,10 388,115 388,305 210,410 32,305 32,115" stroke="#68D391" stroke-width="0.5" fill="none"/>
+      </svg>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Engineering Graphics · Visual Learning System</div>
+        <h1 class="hero-h1">Master <span>Engineering</span><br>Graphics</h1>
+        <p class="hero-tagline">Step-by-step visual guides for Conic Sections,<br>Scales, Polygons &amp; Cycloids</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="document.getElementById('main-topics').scrollIntoView({behavior:'smooth'})">Start Learning</button>
+          <button class="btn-outline" onclick="showTopic('e-cc')">View Demo</button>
+        </div>
+        <div class="hero-stats">
+          <div><div class="stat-val" id="sn1">0</div><div class="stat-lbl">Topics</div></div>
+          <div><div class="stat-val" id="sn2">0</div><div class="stat-lbl">Methods</div></div>
+          <div><div class="stat-val" id="sn3">0</div><div class="stat-lbl">Step Diagrams</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+      <div class="search-wrap">
+        <span class="search-ico">⌕</span>
+        <input class="search-input" id="searchInput" placeholder="Search topics… e.g. ellipse, diagonal scale, pentagon" oninput="filterCards(this.value)">
+      </div>
+    </div>
+
+    <!-- ── CONIC SECTIONS ── -->
+    <section class="section" id="main-topics">
+      <div class="sec-eyebrow">Category 01</div>
+      <div class="sec-title">Conic Sections</div>
+
+      <!-- ELLIPSE -->
+      <div class="cat-header">
+        <span class="cat-icon">○</span>
+        <span class="cat-name">Ellipse</span>
+        <span class="cat-count">3 Methods</span>
+      </div>
+      <div class="cards-grid">
+        <div class="card" data-tags="conic ellipse concentric circle" onclick="showTopic('e-cc')">
+          <div class="card-thumb"><?xml version="1.0"?><svg viewBox="0 0 260 150"><circle cx="130" cy="75" r="70" fill="none" stroke="rgba(99,179,237,0.25)" stroke-width="1.2"/><circle cx="130" cy="75" r="45" fill="none" stroke="rgba(79,209,197,0.25)" stroke-width="1.2"/><ellipse cx="130" cy="75" rx="85" ry="48" fill="none" stroke="#63B3ED" stroke-width="2"/><line x1="45" y1="75" x2="215" y2="75" stroke="rgba(99,179,237,0.3)" stroke-width="0.8" stroke-dasharray="4,4"/><line x1="130" y1="20" x2="130" y2="130" stroke="rgba(99,179,237,0.3)" stroke-width="0.8" stroke-dasharray="4,4"/><circle cx="75" cy="75" r="3" fill="#63B3ED"/><circle cx="185" cy="75" r="3" fill="#63B3ED"/></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-blue)">Ellipse · Method 01</div>
+            <div class="card-title">Concentric Circle Method</div>
+            <div class="card-desc">Draw two concentric circles and project radial lines to locate ellipse points.</div>
+            <div class="card-footer"><span class="badge badge-blue">6 Steps</span></div>
+          </div>
+        </div>
+        <div class="card" data-tags="conic ellipse intersecting arc foci" onclick="showTopic('e-arc')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><circle cx="90" cy="75" r="65" fill="none" stroke="rgba(246,201,14,0.2)" stroke-width="1" stroke-dasharray="5,4"/><circle cx="170" cy="75" r="65" fill="none" stroke="rgba(246,201,14,0.2)" stroke-width="1" stroke-dasharray="5,4"/><ellipse cx="130" cy="75" rx="80" ry="46" fill="none" stroke="#F6C90E" stroke-width="2"/><circle cx="90" cy="75" r="4" fill="#F6C90E"/><circle cx="170" cy="75" r="4" fill="#F6C90E"/><line x1="90" y1="75" x2="130" y2="29" stroke="rgba(246,201,14,0.4)" stroke-width="1"/><line x1="170" y1="75" x2="130" y2="29" stroke="rgba(246,201,14,0.4)" stroke-width="1"/></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-gold)">Ellipse · Method 02</div>
+            <div class="card-title">Intersecting Arc Method</div>
+            <div class="card-desc">Use two foci and compass arcs such that r₁ + r₂ = major axis for every point.</div>
+            <div class="card-footer"><span class="badge badge-gold">5 Steps</span></div>
+          </div>
+        </div>
+        <div class="card" data-tags="conic ellipse oblong rectangle" onclick="showTopic('e-ob')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><rect x="25" y="25" width="210" height="100" fill="none" stroke="rgba(104,211,145,0.3)" stroke-width="1.2" stroke-dasharray="5,4"/><ellipse cx="130" cy="75" rx="105" ry="50" fill="none" stroke="#68D391" stroke-width="2"/><line x1="25" y1="75" x2="235" y2="75" stroke="rgba(104,211,145,0.25)" stroke-width="0.8"/><line x1="130" y1="25" x2="130" y2="125" stroke="rgba(104,211,145,0.25)" stroke-width="0.8"/></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-sage)">Ellipse · Method 03</div>
+            <div class="card-title">Oblong Method</div>
+            <div class="card-desc">Inscribe an ellipse in a rectangle using proportional divisions of each axis.</div>
+            <div class="card-footer"><span class="badge badge-sage">7 Steps</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PARABOLA -->
+      <div class="cat-header">
+        <span class="cat-icon">∪</span>
+        <span class="cat-name">Parabola</span>
+        <span class="cat-count">2 Methods</span>
+      </div>
+      <div class="cards-grid">
+        <div class="card" data-tags="conic parabola rectangle method" onclick="showTopic('p-rect')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><rect x="30" y="20" width="200" height="110" fill="none" stroke="rgba(252,129,129,0.2)" stroke-width="1" stroke-dasharray="4,4"/><path d="M 30 130 Q 130 20 230 130" fill="none" stroke="#FC8181" stroke-width="2.2"/><line x1="30" y1="75" x2="230" y2="75" stroke="rgba(252,129,129,0.2)" stroke-width="0.8" stroke-dasharray="3,3"/><line x1="130" y1="20" x2="130" y2="130" stroke="rgba(252,129,129,0.2)" stroke-width="0.8" stroke-dasharray="3,3"/></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-rose)">Parabola · Method 01</div>
+            <div class="card-title">Rectangle Method</div>
+            <div class="card-desc">Construct a parabola within a rectangle using proportional ordinate divisions.</div>
+            <div class="card-footer"><span class="badge badge-rose">6 Steps</span></div>
+          </div>
+        </div>
+        <div class="card" data-tags="conic parabola tangent method" onclick="showTopic('p-tang')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><path d="M 30 130 Q 130 10 230 130" fill="none" stroke="#F6C90E" stroke-width="2.2"/><line x1="30" y1="130" x2="230" y2="130" stroke="rgba(246,201,14,0.5)" stroke-width="1.5"/><line x1="30" y1="130" x2="130" y2="10" stroke="rgba(246,201,14,0.4)" stroke-width="1.2"/><line x1="230" y1="130" x2="130" y2="10" stroke="rgba(246,201,14,0.4)" stroke-width="1.2"/><line x1="80" y1="70" x2="180" y2="70" stroke="rgba(246,201,14,0.3)" stroke-width="0.8" stroke-dasharray="3,3"/></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-gold)">Parabola · Method 02</div>
+            <div class="card-title">Tangent Method</div>
+            <div class="card-desc">Divide the two sides of a triangle and join corresponding division points as tangents.</div>
+            <div class="card-footer"><span class="badge badge-gold">5 Steps</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HYPERBOLA -->
+      <div class="cat-header">
+        <span class="cat-icon">⌒</span>
+        <span class="cat-name">Hyperbola</span>
+        <span class="cat-count">2 Methods</span>
+      </div>
+      <div class="cards-grid">
+        <div class="card" data-tags="conic hyperbola general eccentricity" onclick="showTopic('h-gen')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><path d="M 60 10 C 90 60, 90 90, 60 140" fill="none" stroke="#4FD1C5" stroke-width="2.2"/><path d="M 200 10 C 170 60, 170 90, 200 140" fill="none" stroke="#4FD1C5" stroke-width="2.2"/><line x1="10" y1="10" x2="250" y2="140" stroke="rgba(79,209,197,0.25)" stroke-width="0.8" stroke-dasharray="4,4"/><line x1="250" y1="10" x2="10" y2="140" stroke="rgba(79,209,197,0.25)" stroke-width="0.8" stroke-dasharray="4,4"/><circle cx="130" cy="75" r="3" fill="#4FD1C5"/></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-teal)">Hyperbola · Method 01</div>
+            <div class="card-title">General Method</div>
+            <div class="card-desc">Construct a hyperbola using the focus-directrix method with eccentricity e &gt; 1.</div>
+            <div class="card-footer"><span class="badge badge-teal">7 Steps</span></div>
+          </div>
+        </div>
+        <div class="card" data-tags="conic hyperbola rectangular xy" onclick="showTopic('h-rect')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><line x1="30" y1="10" x2="30" y2="140" stroke="rgba(99,179,237,0.4)" stroke-width="1.5"/><line x1="10" y1="130" x2="250" y2="130" stroke="rgba(99,179,237,0.4)" stroke-width="1.5"/><path d="M 35 20 C 50 50, 80 110, 240 125" fill="none" stroke="#63B3ED" stroke-width="2.2"/><text x="40" y="80" font-size="11" fill="rgba(99,179,237,0.5)" font-family="serif" font-style="italic">xy = c²</text></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-blue)">Hyperbola · Method 02</div>
+            <div class="card-title">Rectangular Hyperbola</div>
+            <div class="card-desc">Draw a rectangular hyperbola where xy = constant, with asymptotes along the axes.</div>
+            <div class="card-footer"><span class="badge badge-blue">5 Steps</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ── SCALES ── -->
+    <section class="section">
+      <div class="sec-eyebrow">Category 02</div>
+      <div class="sec-title">Scales</div>
+      <div class="cards-grid">
+        <div class="card" data-tags="scale plain ruler rf" onclick="showTopic('plain-scale')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><rect x="20" y="55" width="220" height="40" fill="rgba(99,179,237,0.05)" stroke="#63B3ED" stroke-width="1.5"/><line x1="20" y1="55" x2="20" y2="95" stroke="#63B3ED" stroke-width="2"/><line x1="64" y1="55" x2="64" y2="95" stroke="#63B3ED" stroke-width="1.2"/><line x1="108" y1="55" x2="108" y2="95" stroke="#63B3ED" stroke-width="1.2"/><line x1="152" y1="55" x2="152" y2="95" stroke="#63B3ED" stroke-width="1.2"/><line x1="196" y1="55" x2="196" y2="95" stroke="#63B3ED" stroke-width="1.2"/><line x1="240" y1="55" x2="240" y2="95" stroke="#63B3ED" stroke-width="2"/><text x="28" y="110" font-size="10" fill="rgba(99,179,237,0.7)" font-family="monospace">0  1  2  3  4  5 km</text><text x="60" y="45" font-size="10" fill="rgba(99,179,237,0.5)" font-family="monospace">RF = 1:50,000</text></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-blue)">Scales · Method 01</div>
+            <div class="card-title">Plain Scale</div>
+            <div class="card-desc">Construct a scale to read two units of measurement at a given Representative Fraction.</div>
+            <div class="card-footer"><span class="badge badge-blue">5 Steps</span></div>
+          </div>
+        </div>
+        <div class="card" data-tags="scale diagonal three units precision" onclick="showTopic('diagonal-scale')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><rect x="20" y="20" width="220" height="110" fill="rgba(246,201,14,0.03)" stroke="rgba(246,201,14,0.4)" stroke-width="1.5"/><line x1="20" y1="20" x2="240" y2="20" stroke="#F6C90E" stroke-width="1.8"/><line x1="20" y1="130" x2="240" y2="130" stroke="#F6C90E" stroke-width="1.8"/><line x1="20" y1="42" x2="240" y2="42" stroke="rgba(246,201,14,0.25)" stroke-width="0.7"/><line x1="20" y1="64" x2="240" y2="64" stroke="rgba(246,201,14,0.25)" stroke-width="0.7"/><line x1="20" y1="86" x2="240" y2="86" stroke="rgba(246,201,14,0.25)" stroke-width="0.7"/><line x1="20" y1="108" x2="240" y2="108" stroke="rgba(246,201,14,0.25)" stroke-width="0.7"/><line x1="20" y1="20" x2="240" y2="130" stroke="rgba(246,201,14,0.5)" stroke-width="1.2"/><line x1="20" y1="42" x2="218" y2="130" stroke="rgba(246,201,14,0.3)" stroke-width="0.8"/></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-gold)">Scales · Method 02</div>
+            <div class="card-title">Diagonal Scale</div>
+            <div class="card-desc">Read three units of measurement using diagonal lines within subdivided rectangles.</div>
+            <div class="card-footer"><span class="badge badge-gold">7 Steps</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ── POLYGONS ── -->
+    <section class="section" id="polygon-section">
+      <div class="sec-eyebrow">Category 03</div>
+      <div class="sec-title">Polygons — Select a Shape</div>
+      <div class="polygon-shapes-grid">
+        <div class="shape-card" onclick="showPolygonMethods('pentagon')">
+          <svg viewBox="0 0 80 80"><polygon points="40,6 74,28 62,68 18,68 6,28" fill="rgba(99,179,237,0.06)" stroke="#63B3ED" stroke-width="1.8"/></svg>
+          <div class="shape-name">Pentagon</div><div class="shape-sides">5 Sides</div>
+        </div>
+        <div class="shape-card" onclick="showPolygonMethods('hexagon')">
+          <svg viewBox="0 0 80 80"><polygon points="40,5 72,22.5 72,57.5 40,75 8,57.5 8,22.5" fill="rgba(246,201,14,0.06)" stroke="#F6C90E" stroke-width="1.8"/></svg>
+          <div class="shape-name">Hexagon</div><div class="shape-sides">6 Sides</div>
+        </div>
+        <div class="shape-card" onclick="showPolygonMethods('heptagon')">
+          <svg viewBox="0 0 80 80"><polygon points="40,5 68,18 76,48 58,72 22,72 4,48 12,18" fill="rgba(104,211,145,0.06)" stroke="#68D391" stroke-width="1.8"/></svg>
+          <div class="shape-name">Heptagon</div><div class="shape-sides">7 Sides</div>
+        </div>
+        <div class="shape-card" onclick="showPolygonMethods('octagon')">
+          <svg viewBox="0 0 80 80"><polygon points="27,5 53,5 75,27 75,53 53,75 27,75 5,53 5,27" fill="rgba(79,209,197,0.06)" stroke="#4FD1C5" stroke-width="1.8"/></svg>
+          <div class="shape-name">Octagon</div><div class="shape-sides">8 Sides</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ── CYCLOIDS ── -->
+    <section class="section">
+      <div class="sec-eyebrow">Category 04</div>
+      <div class="sec-title">Cycloids</div>
+      <div class="cards-grid">
+        <div class="card" data-tags="cycloid rolling circle straight line" onclick="showTopic('cycloid')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><line x1="10" y1="120" x2="250" y2="120" stroke="rgba(99,179,237,0.4)" stroke-width="1.5"/><path d="M 15 120 C 45 60, 65 35, 80 30 C 95 25, 110 50, 130 90 C 150 130, 165 120, 185 120 C 205 120, 220 80, 245 30" fill="none" stroke="#63B3ED" stroke-width="2.2"/><circle cx="80" cy="30" r="3" fill="#63B3ED"/><circle cx="130" cy="90" r="3" fill="#63B3ED"/></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-blue)">Cycloids · Type 01</div>
+            <div class="card-title">Standard Cycloid</div>
+            <div class="card-desc">Trace the locus of a point on a circle rolling along a straight base line.</div>
+            <div class="card-footer"><span class="badge badge-blue">8 Steps</span></div>
+          </div>
+        </div>
+        <div class="card" data-tags="epicycloid rolling outside base circle" onclick="showTopic('epicycloid')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><circle cx="130" cy="80" r="55" fill="none" stroke="rgba(252,129,129,0.3)" stroke-width="1.5"/><path d="M 185 80 C 198 45, 222 38, 218 80 C 214 122, 192 132, 174 115 C 156 98, 162 68, 185 80Z" fill="none" stroke="#FC8181" stroke-width="2.2"/></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-rose)">Cycloids · Type 02</div>
+            <div class="card-title">Epicycloid</div>
+            <div class="card-desc">Trace a point on a generating circle rolling outside a fixed base circle.</div>
+            <div class="card-footer"><span class="badge badge-rose">9 Steps</span></div>
+          </div>
+        </div>
+        <div class="card" data-tags="hypocycloid rolling inside base circle" onclick="showTopic('hypocycloid')">
+          <div class="card-thumb"><svg viewBox="0 0 260 150"><circle cx="130" cy="75" r="65" fill="none" stroke="rgba(104,211,145,0.25)" stroke-width="1.5"/><path d="M 195 75 C 178 52, 152 20, 130 10 C 108 20, 82 52, 65 75 C 82 98, 108 130, 130 140 C 152 130, 178 98, 195 75Z" fill="none" stroke="#68D391" stroke-width="2.2"/></svg></div>
+          <div class="card-body">
+            <div class="card-eyebrow" style="color:var(--accent-sage)">Cycloids · Type 03</div>
+            <div class="card-title">Hypocycloid</div>
+            <div class="card-desc">Trace a point on a generating circle rolling inside a fixed base circle.</div>
+            <div class="card-footer"><span class="badge badge-sage">9 Steps</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── VIDEOS ── -->
+    <section class="video-section">
+      <div class="sec-eyebrow">Reference Videos</div>
+      <div class="sec-title">Ezed Channel — YouTube</div>
+      <div class="video-grid" id="videoGrid"></div>
+    </section>
+
+  </div><!-- end home-page -->
+
+  <!-- ══ TOPIC PAGE ══ -->
+  <div class="topic-page" id="topic-page">
+    <div class="topic-hero">
+      <div class="breadcrumb" id="topicBc">
+        <span onclick="goHome()">Home</span> ›
+        <span id="bcCat">Category</span> ›
+        <span id="bcTopic" style="color:var(--text-b);cursor:default"></span>
+      </div>
+      <div class="topic-title" id="topicTitle"></div>
+      <div class="topic-sub" id="topicSub"></div>
+    </div>
+
+    <div class="construction">
+      <div class="diagram-area">
+        <div class="diagram-box">
+          <div class="diagram-label" id="diagLabel">Construction Diagram</div>
+          <svg id="mainSVG" viewBox="0 0 500 380" width="100%" height="100%">
+            <defs>
+              <filter id="gs"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <filter id="gs2"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <g id="svgContent"></g>
+          </svg>
+        </div>
+        <div class="controls">
+          <button class="ctrl" id="playBtn" onclick="togglePlay()">▶ Play</button>
+          <button class="ctrl" onclick="prevStep()">◀ Prev</button>
+          <button class="ctrl" onclick="nextStep()">Next ▶</button>
+          <button class="ctrl" onclick="resetAnim()">↺ Reset</button>
+          <div class="speed-row">Speed <input type="range" min="1" max="5" value="2" id="speedSlider"></div>
+        </div>
+        <a class="dl-btn" href="#" onclick="alert('PDF download would be generated here.')">↓ Download PDF + Practice Sheet</a>
+        <a class="dl-btn" id="watchVideoBtn" href="#" target="_blank" rel="noopener" style="border-color:rgba(252,129,129,0.35);color:var(--accent-rose);margin-top:10px;display:none">▶ Watch on YouTube — Ezed Channel ↗</a>
+      </div>
+      <div class="steps-panel">
+        <div class="steps-heading">Construction Steps</div>
+        <div id="stepsContainer"></div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="quiz-area">
+      <div class="sec-eyebrow">Knowledge Check</div>
+      <div class="sec-title">Quick Quiz</div>
+      <div class="quiz-card">
+        <div class="quiz-q" id="quizQ"></div>
+        <div class="quiz-opts" id="quizOpts"></div>
+        <div class="quiz-fb" id="quizFb"></div>
+        <button class="btn-primary" onclick="nextQuiz()">Next Question</button>
+      </div>
+    </div>
+  </div><!-- end topic-page -->
+
+  <!-- ══ POLYGON METHODS PAGE ══ -->
+  <div class="topic-page" id="poly-page">
+    <div class="topic-hero">
+      <div class="breadcrumb">
+        <span onclick="goHome()">Home</span> › <span onclick="goHome()">Polygons</span> › <span id="polyPageTitle" style="color:var(--text-b);cursor:default"></span>
+      </div>
+      <div class="topic-title" id="polyTitle"></div>
+      <div class="topic-sub" id="polySub"></div>
+    </div>
+
+    <!-- METHOD TABS -->
+    <div class="poly-method-tabs" id="polyMethodTabs"></div>
+
+    <!-- Construction area reuse -->
+    <div class="construction" id="polyConstruct">
+      <div class="diagram-area">
+        <div class="diagram-box">
+          <div class="diagram-label" id="polyDiagLabel">Construction Diagram</div>
+          <svg id="polySVG" viewBox="0 0 500 380" width="100%" height="100%">
+            <defs>
+              <filter id="pgs"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <g id="polySVGContent"></g>
+          </svg>
+        </div>
+        <div class="controls">
+          <button class="ctrl" id="polyPlayBtn" onclick="polyTogglePlay()">▶ Play</button>
+          <button class="ctrl" onclick="polyPrevStep()">◀ Prev</button>
+          <button class="ctrl" onclick="polyNextStep()">Next ▶</button>
+          <button class="ctrl" onclick="polyResetAnim()">↺ Reset</button>
+          <div class="speed-row">Speed <input type="range" min="1" max="5" value="2" id="polySpeedSlider"></div>
+        </div>
+        <a class="dl-btn" href="#" onclick="alert('PDF download would be generated here.')">↓ Download PDF + Practice Sheet</a>
+        <a class="dl-btn" id="polyWatchBtn" href="#" target="_blank" rel="noopener" style="border-color:rgba(252,129,129,0.35);color:var(--accent-rose);margin-top:10px">▶ Watch on YouTube — Ezed Channel ↗</a>
+      </div>
+      <div class="steps-panel">
+        <div class="steps-heading">Construction Steps</div>
+        <div id="polyStepsContainer"></div>
+      </div>
+    </div>
+
+    <!-- Quiz -->
+    <div class="quiz-area">
+      <div class="sec-eyebrow">Knowledge Check</div>
+      <div class="sec-title">Quick Quiz</div>
+      <div class="quiz-card">
+        <div class="quiz-q" id="polyQuizQ"></div>
+        <div class="quiz-opts" id="polyQuizOpts"></div>
+        <div class="quiz-fb" id="polyQuizFb"></div>
+        <button class="btn-primary" onclick="polyNextQuiz()">Next Question</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+// ═══ UTILS ═══
+function svgNS(tag,a={}){
+  const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(const[k,v] of Object.entries(a)) e.setAttribute(k,v);
+  return e;
+}
+function add(el){document.getElementById('svgContent').appendChild(el);return el;}
+function addPoly(el){document.getElementById('polySVGContent').appendChild(el);return el;}
+function clr(){document.getElementById('svgContent').innerHTML='';}
+function clrPoly(){document.getElementById('polySVGContent').innerHTML='';}
+
+// ═══ NAV ═══
+function toggleNav(btn,id){
+  btn.classList.toggle('open');
+  document.getElementById(id).classList.toggle('open');
+}
+function toggleSubNav(el,id){
+  document.getElementById(id).classList.toggle('open');
+  el.classList.toggle('active');
+}
+function goHome(){
+  document.querySelectorAll('.home-page,.topic-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('home-page').classList.add('active');
+}
+
+// ═══ PAGE SWITCH ═══
+function showPage(id){
+  document.querySelectorAll('.home-page,.topic-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ═══ VIDEO DATA ═══
+const VIDEOS=[
+  {title:'Ellipse – Concentric Circle Method',      url:'https://youtu.be/SptYPE6moSY?si=K6_6662zgOLCEadz',      deco:'○', badge:'Ellipse'},
+  {title:'Ellipse – Intersecting Arc Method',       url:'https://youtu.be/EQPXw3ARRkI?si=jqd6bWhH4yyrEmkH',      deco:'○', badge:'Ellipse'},
+  {title:'Ellipse – Rectangle (Oblong) Method',     url:'https://youtu.be/w1-PxSncmQM?si=chsSbN5qki2cQuyo',      deco:'○', badge:'Ellipse'},
+  {title:'Parabola – General Method',               url:'https://youtu.be/ZlekZGPfbo8?si=LRNNZ-6G78S9-jbf',      deco:'∪', badge:'Parabola'},
+  {title:'Hyperbola – General Method',              url:'https://youtu.be/dcaGNfplUbU?si=kFrd3rLTZcmlpqTs',      deco:'⌒', badge:'Hyperbola'},
+  {title:'Plain Scale',                             url:'https://youtu.be/n9iQcttWHAo?si=njce1suKku57z3pY',      deco:'◫', badge:'Scales'},
+  {title:'Diagonal Scale',                          url:'https://youtu.be/IrODLiQi5RQ?si=7eHPcJZLYHU7A73Q',      deco:'◫', badge:'Scales'},
+  {title:'Polygons – General Method',               url:'https://youtu.be/5tl1_7lhzdw?si=Fc6bfawIkbmzifbj',      deco:'⬡', badge:'Polygons'},
+  {title:'Pentagon – Base Angle Method',            url:'https://youtu.be/-qF8BpzIDSQ?si=OzNOr7NRmkn2HjYG',      deco:'⬡', badge:'Pentagon'},
+  {title:'Pentagon – External Angle Method',        url:'https://youtube.com/shorts/7ywwOS-ryZU?si=ol71MtFwDH2jmCNF', deco:'⬡', badge:'Pentagon'},
+  {title:'Hexagon – Base Angle Method',             url:'https://youtube.com/shorts/b_E08z6ONAU?si=u3cQVF7apVwuFLNR', deco:'⬡', badge:'Hexagon'},
+  {title:'Hexagon – External Angle Method',         url:'https://youtu.be/4r8XXwdSBjE?si=cz7XSvU8DpEEvzYb',      deco:'⬡', badge:'Hexagon'},
+  {title:'Cycloid Construction',                    url:'https://youtu.be/R39tO77LPCY?si=nd8qNp1zmB-pZbcw',      deco:'⟳', badge:'Cycloids'},
+  {title:'Epicycloid Construction',                 url:'https://youtu.be/Ola-dgVf7nE?si=BmIyG9rFkxTW3owN',      deco:'⟳', badge:'Cycloids'},
+  {title:'Hypocycloid Construction',                url:'https://youtu.be/hYSxjdHE550?si=MQzERsvrt-VaNWdm',      deco:'⟳', badge:'Cycloids'},
+];
+(function buildVideos(){
+  const g=document.getElementById('videoGrid');
+  VIDEOS.forEach(v=>{
+    g.innerHTML+=`<a class="video-card" href="${v.url}" target="_blank" rel="noopener">
+      <div class="video-thumb">
+        <div class="video-deco">${v.deco}</div>
+        <div class="yt-icon">▶</div>
+      </div>
+      <div class="video-body">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">
+          <span style="padding:2px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1px;background:rgba(99,179,237,0.1);color:var(--accent-blue);border:1px solid rgba(99,179,237,0.25)">${v.badge}</span>
+        </div>
+        <div class="video-title">${v.title}</div>
+        <div class="video-ch">▸ Ezed Channel · Watch on YouTube ↗</div>
+      </div></a>`;
+  });
+})();
+
+// ═══ SEARCH ═══
+function filterCards(v){
+  document.querySelectorAll('.card[data-tags]').forEach(c=>{
+    c.style.display=(!v||c.dataset.tags.includes(v.toLowerCase()))?'':'none';
+  });
+}
+
+// ═══ TOPIC DATA ═══
+const TOPIC_VIDEOS={
+  'e-cc':   'https://youtu.be/SptYPE6moSY?si=K6_6662zgOLCEadz',
+  'e-arc':  'https://youtu.be/EQPXw3ARRkI?si=jqd6bWhH4yyrEmkH',
+  'e-ob':   'https://youtu.be/w1-PxSncmQM?si=chsSbN5qki2cQuyo',
+  'p-rect': 'https://youtu.be/ZlekZGPfbo8?si=LRNNZ-6G78S9-jbf',
+  'p-tang': 'https://youtu.be/ZlekZGPfbo8?si=LRNNZ-6G78S9-jbf',
+  'h-gen':  'https://youtu.be/dcaGNfplUbU?si=kFrd3rLTZcmlpqTs',
+  'h-rect': 'https://youtu.be/dcaGNfplUbU?si=kFrd3rLTZcmlpqTs',
+  'plain-scale':    'https://youtu.be/n9iQcttWHAo?si=njce1suKku57z3pY',
+  'diagonal-scale': 'https://youtu.be/IrODLiQi5RQ?si=7eHPcJZLYHU7A73Q',
+  'cycloid':     'https://youtu.be/R39tO77LPCY?si=nd8qNp1zmB-pZbcw',
+  'epicycloid':  'https://youtu.be/Ola-dgVf7nE?si=BmIyG9rFkxTW3owN',
+  'hypocycloid': 'https://youtu.be/hYSxjdHE550?si=MQzERsvrt-VaNWdm',
+};
+const POLY_VIDEOS={
+  gm: { pentagon:'https://youtu.be/5tl1_7lhzdw?si=Fc6bfawIkbmzifbj', hexagon:'https://youtu.be/5tl1_7lhzdw?si=Fc6bfawIkbmzifbj', heptagon:'https://youtu.be/5tl1_7lhzdw?si=Fc6bfawIkbmzifbj', octagon:'https://youtu.be/5tl1_7lhzdw?si=Fc6bfawIkbmzifbj' },
+  ba: { pentagon:'https://youtu.be/-qF8BpzIDSQ?si=OzNOr7NRmkn2HjYG', hexagon:'https://youtube.com/shorts/b_E08z6ONAU?si=u3cQVF7apVwuFLNR', heptagon:'https://youtu.be/-qF8BpzIDSQ?si=OzNOr7NRmkn2HjYG', octagon:'https://youtu.be/-qF8BpzIDSQ?si=OzNOr7NRmkn2HjYG' },
+  ea: { pentagon:'https://youtube.com/shorts/7ywwOS-ryZU?si=ol71MtFwDH2jmCNF', hexagon:'https://youtu.be/4r8XXwdSBjE?si=cz7XSvU8DpEEvzYb', heptagon:'https://youtube.com/shorts/7ywwOS-ryZU?si=ol71MtFwDH2jmCNF', octagon:'https://youtube.com/shorts/7ywwOS-ryZU?si=ol71MtFwDH2jmCNF' },
+};
+
+const TOPICS={
+  'e-cc':{
+    title:'Concentric Circle Method', cat:'Conic Sections › Ellipse', color:'var(--accent-blue)',
+    desc:'Construct an ellipse given its major and minor axes by projecting points from two concentric circles.',
+    steps:[
+      {h:'Draw Major & Minor Axes',d:'Draw major axis AB (horizontal) and minor axis CD (vertical) intersecting at centre O.'},
+      {h:'Draw Concentric Circles',d:'Draw two circles centred at O: outer circle with diameter = major axis; inner circle with diameter = minor axis.'},
+      {h:'Divide Into 12 Parts',d:'Using radial lines at 30° intervals from O, divide both circles into 12 equal parts.'},
+      {h:'Project Horizontally from Outer',d:'From each point on the outer circle, draw a horizontal line towards the major axis.'},
+      {h:'Project Vertically from Inner',d:'From the corresponding point on the inner circle, draw a vertical line upward or downward.'},
+      {h:'Mark Intersections',d:'Where the horizontal and vertical projection lines cross, mark a point on the ellipse.'},
+      {h:'Draw the Ellipse',d:'Join all 12 intersection points with a smooth freehand curve to complete the ellipse.'},
+    ],
+    quiz:[
+      {q:'In the Concentric Circle Method, which circle has its diameter equal to the MAJOR axis?',opts:['Inner circle','Outer circle','Both circles','Neither'],ans:1,exp:'The outer (larger) circle diameter equals the major axis; the inner circle equals the minor axis.'},
+      {q:'How many points are typically located on the ellipse using this method?',opts:['4','8','12','16'],ans:2,exp:'12 radial lines at 30° intervals give 12 ellipse points (plus the 4 axis endpoints).'},
+    ],
+    drawFn:drawEllipseCC
+  },
+  'e-arc':{
+    title:'Intersecting Arc Method', cat:'Conic Sections › Ellipse', color:'var(--accent-gold)',
+    desc:'Locate ellipse points using two foci and compass arcs whose radii always sum to the major axis length.',
+    steps:[
+      {h:'Draw Axes & Rectangle',d:'Draw major axis AB and minor axis CD through centre O.'},
+      {h:'Locate the Two Foci',d:'With C as centre and OA (half of major axis) as radius, cut arcs on AB to get foci F₁ and F₂.'},
+      {h:'Mark Division Points',d:'Divide segment AF₁ into several equal parts, labelling them 1, 2, 3...'},
+      {h:'Draw Arcs from F₁',d:'With F₁ as centre and radii A-1, A-2, A-3… draw arcs above and below the major axis.'},
+      {h:'Draw Arcs from F₂',d:'With F₂ as centre and radii B-1, B-2, B-3… (complementary distances) draw arcs to intersect.'},
+      {h:'Mark Ellipse Points',d:'Each pair of intersecting arcs gives one point on the ellipse.'},
+      {h:'Complete the Ellipse',d:'Join all points smoothly. The curve passes through A, B, C, D and all intersection points.'},
+    ],
+    quiz:[
+      {q:'The sum r₁ + r₂ for any point on an ellipse equals:',opts:['Minor axis (2b)','Semi-major axis (a)','Major axis (2a)','Focal distance'],ans:2,exp:'By the ellipse definition, r₁ + r₂ = 2a (full major axis length) for every point.'},
+      {q:'The foci lie on which axis?',opts:['Minor axis','Both axes equally','Major axis','Perpendicular bisector'],ans:2,exp:'Both foci always lie on the major (longer) axis.'},
+    ],
+    drawFn:drawEllipseArc
+  },
+  'e-ob':{
+    title:'Oblong (Rectangle) Method', cat:'Conic Sections › Ellipse', color:'var(--accent-sage)',
+    desc:'Inscribe an ellipse within a rectangle by dividing axes and rectangle sides proportionally to locate curve points.',
+    steps:[
+      {h:'Draw Rectangle ABCD',d:'Draw a rectangle with length = major axis and height = minor axis.'},
+      {h:'Mark Axes Through Centre',d:'Draw the major axis (horizontal) and minor axis (vertical) through the rectangle centre.'},
+      {h:'Divide Half-Major Axis',d:'Divide the half major axis (O to A) into equal parts – say 4 parts.'},
+      {h:'Divide Top Half of Rectangle',d:'Divide the top half of the rectangle into the same number of equal vertical strips.'},
+      {h:'Draw Construction Lines',d:'From vertex C (top of minor axis), draw lines to each division on the major axis. From O, draw lines to the corresponding divisions on the top edge.'},
+      {h:'Find Intersections',d:'The intersection of the line from C with the line from O at each matching division gives an ellipse point.'},
+      {h:'Mirror & Complete',d:'Reflect all found points across both axes and draw a smooth curve through all 12+ points.'},
+    ],
+    quiz:[
+      {q:'The bounding rectangle in the Oblong Method has dimensions:',opts:['a × a (square)','2a × 2b','a × b','π a × π b'],ans:1,exp:'Rectangle length = major axis = 2a, height = minor axis = 2b.'},
+    ],
+    drawFn:drawEllipseOb
+  },
+  'p-rect':{
+    title:'Parabola — Rectangle Method', cat:'Conic Sections › Parabola', color:'var(--accent-rose)',
+    desc:'Construct a parabola within an enclosing rectangle using proportional ordinate and abscissa divisions.',
+    steps:[
+      {h:'Draw Enclosing Rectangle',d:'Draw rectangle ABCD. The base AB is the double ordinate and height = the abscissa.'},
+      {h:'Locate the Vertex',d:'Mark vertex V at the midpoint of AB (bottom centre).'},
+      {h:'Divide the Rectangle',d:'Divide the half-width (V to A) into equal parts (say 4). Also divide the height into 4 equal parts.'},
+      {h:'Draw Ordinate Lines',d:'From each division on the top edge, draw vertical lines downward to the base.'},
+      {h:'Locate Points by Proportion',d:'Parabola ordinates vary as the square of abscissae. Point P at 1/4 height is at (1/4)² = 1/16 of half-width from centre.'},
+      {h:'Plot All Points',d:'Calculate and plot all points using the parabola law y² = 4ax (or proportional construction).'},
+      {h:'Complete the Curve',d:'Join all points with a smooth curve. The curve passes through A, V, B symmetrically.'},
+    ],
+    quiz:[
+      {q:'Eccentricity of a parabola is:',opts:['e = 0','e < 1','e = 1','e > 1'],ans:2,exp:'e = 1 exactly for a parabola. Ellipse: e < 1; Hyperbola: e > 1.'},
+    ],
+    drawFn:drawParabolaRect
+  },
+  'p-tang':{
+    title:'Parabola — Tangent Method', cat:'Conic Sections › Parabola', color:'var(--accent-gold)',
+    desc:'Construct a parabola by drawing it as the envelope of a family of tangent lines between divided sides of a triangle.',
+    steps:[
+      {h:'Draw the Enclosing Triangle',d:'Draw triangle with vertex at the top (parabola vertex) and base = double ordinate.'},
+      {h:'Divide Both Slant Sides',d:'Divide the two slant sides (from apex to base corners) into the same number of equal parts — say 8.'},
+      {h:'Number the Divisions',d:'Number divisions 1–8 from the apex on the left side and 1–8 from the apex on the right side.'},
+      {h:'Join Corresponding Points',d:'Draw a line from point 1 on the left to point 1 on the right, from 2 to 2, and so on.'},
+      {h:'The Envelope is the Parabola',d:'The family of straight lines forms the envelope which is the required parabola.'},
+      {h:'Draw Smooth Curve',d:'Trace the smooth inner curve that is tangent to all the drawn lines.'},
+    ],
+    quiz:[
+      {q:'In the Tangent Method, what forms the parabola?',opts:['Intersection of lines','Envelope of tangent lines','Arc of a circle','Projection of points'],ans:1,exp:'The parabola is the ENVELOPE — the smooth curve tangent to all the drawn lines.'},
+    ],
+    drawFn:drawParabolaTang
+  },
+  'h-gen':{
+    title:'Hyperbola — General Method', cat:'Conic Sections › Hyperbola', color:'var(--accent-teal)',
+    desc:'Construct a hyperbola using the focus-directrix definition with eccentricity e > 1.',
+    steps:[
+      {h:'Draw Directrix & Axis',d:'Draw the directrix (vertical) and transverse axis (horizontal) perpendicular to it.'},
+      {h:'Mark Focus & Vertex',d:'Mark focus F and vertex V on the axis. For a hyperbola e > 1, so VF/VD = e.'},
+      {h:'Set Eccentricity Scale',d:'Mark point P on the axis such that VP/VF = 1/e. This creates the eccentricity construction.'},
+      {h:'Mark Points on Directrix',d:'Mark equally spaced points 1, 2, 3, 4… on the directrix above and below the axis.'},
+      {h:'Draw Parallel Lines',d:'Through each directrix point, draw a line parallel to the axis.'},
+      {h:'Draw Distance Lines from Focus',d:'From F, draw arcs of radius equal to e × (distance from directrix to each point) to intersect the parallel lines.'},
+      {h:'Plot Hyperbola Points',d:'Each intersection gives a point on the hyperbola. Find points in all four quadrants.'},
+      {h:'Complete Both Branches',d:'Join all points with smooth curves to form the two branches of the hyperbola.'},
+    ],
+    quiz:[
+      {q:'Eccentricity e for a hyperbola is:',opts:['e = 0','e < 1','e = 1','e > 1'],ans:3,exp:'Hyperbola: e > 1. Parabola: e = 1. Ellipse: e < 1. Circle: e = 0.'},
+    ],
+    drawFn:drawHyperbolaGen
+  },
+  'h-rect':{
+    title:'Rectangular Hyperbola', cat:'Conic Sections › Hyperbola', color:'var(--accent-blue)',
+    desc:'Draw a rectangular hyperbola where xy = constant, with the coordinate axes as asymptotes.',
+    steps:[
+      {h:'Draw the Asymptotes',d:'Draw the x-axis and y-axis. These are the asymptotes of the rectangular hyperbola.'},
+      {h:'Choose a Known Point',d:'Given point P(x₁, y₁) on the curve. Note that xy = x₁y₁ = c² (constant).'},
+      {h:'Mark Equal-Area Rectangles',d:'For several x-values, calculate y = c²/x. Note these form equal-area rectangles under the curve.'},
+      {h:'Plot the Points',d:'Plot all (x, y) pairs calculated from xy = c².'},
+      {h:'Draw the Curve',d:'Join all plotted points with a smooth curve. The curve approaches both axes asymptotically.'},
+    ],
+    quiz:[
+      {q:'In a rectangular hyperbola, the asymptotes are:',opts:['Parallel lines','At 60° to each other','The coordinate axes (90°)','Curves themselves'],ans:2,exp:'In a rectangular hyperbola, the asymptotes are perpendicular (90°) — the x and y axes.'},
+    ],
+    drawFn:drawHyperbolaRect
+  },
+  'plain-scale':{
+    title:'Plain Scale', cat:'Scales', color:'var(--accent-blue)',
+    desc:'Construct a plain scale to read TWO units of measurement at a given Representative Fraction (RF).',
+    steps:[
+      {h:'Determine RF and Length',d:'Given RF (e.g. 1:50,000), calculate scale length = RF × maximum distance to be shown.'},
+      {h:'Draw the Scale Rectangle',d:'Draw a horizontal line of the calculated length. Mark it as a thin rectangle.'},
+      {h:'Divide into Main Units',d:'Divide the full length into equal divisions representing the main unit (e.g. kilometres).'},
+      {h:'Sub-Divide the First Division',d:'Divide the leftmost division into sub-units (e.g. 10 equal parts = 100 m each).'},
+      {h:'Fill Alternate Divisions',d:'Fill alternate divisions and sub-divisions with solid black to aid reading.'},
+      {h:'Label and Annotate',d:'Label 0 at the boundary of the first division. Number units to the right and sub-units to the left of 0. Write the RF above.'},
+    ],
+    quiz:[
+      {q:'A Plain Scale reads how many units of measurement?',opts:['One','Two','Three','Four'],ans:1,exp:'A plain scale reads two units — a main unit (e.g. km) and a subdivision (e.g. m).'},
+      {q:'RF = 1:50,000 means 1 cm on drawing equals how much in reality?',opts:['50 m','500 m','5 km (50,000 cm)','5 m'],ans:2,exp:'1 cm drawing = 50,000 cm = 500 m = 0.5 km in reality.'},
+    ],
+    drawFn:drawPlainScale
+  },
+  'diagonal-scale':{
+    title:'Diagonal Scale', cat:'Scales', color:'var(--accent-gold)',
+    desc:'Construct a diagonal scale to read THREE units of measurement using diagonal lines within the scale rectangle.',
+    steps:[
+      {h:'Calculate Scale Length',d:'Determine total scale length from RF and maximum distance.'},
+      {h:'Draw the Scale Rectangle',d:'Draw a long rectangle. Its height is divided into 10 equal parts (one per tenth of the smallest unit).'},
+      {h:'Divide into Main Units',d:'Divide the rectangle horizontally into main unit divisions.'},
+      {h:'Sub-Divide First Division',d:'Further divide the leftmost main division into 10 equal parts horizontally.'},
+      {h:'Draw 10 Horizontal Lines',d:'Divide the full height into 10 equal horizontal rows across the entire length.'},
+      {h:'Draw Diagonal Lines',d:'In the leftmost sub-divided column, draw diagonals from point 0 at the bottom to point 10 at the top, crossing each row at one sub-unit increment.'},
+      {h:'Read the Scale',d:'A measurement is read at the intersection of: horizontal row (tenths), vertical column (units), diagonal position (hundredths).'},
+    ],
+    quiz:[
+      {q:'A Diagonal Scale reads how many units?',opts:['One','Two','Three','Four'],ans:2,exp:'Diagonal scale reads THREE units — main, sub, and sub-sub (using diagonals).'},
+      {q:'Diagonal lines are drawn in which part of the scale?',opts:['Throughout all columns','Only the rightmost column','Only the leftmost sub-divided column','Along the top edge'],ans:2,exp:'Diagonals are drawn only in the leftmost (smallest) sub-divided column.'},
+    ],
+    drawFn:drawDiagScale
+  },
+  'cycloid':{
+    title:'Standard Cycloid', cat:'Cycloids', color:'var(--accent-blue)',
+    desc:'Trace the locus of a fixed point P on the circumference of a circle as it rolls along a straight line.',
+    steps:[
+      {h:'Draw Rolling Circle & Base',d:'Draw the generating circle of radius r. Draw the base line tangent below it.'},
+      {h:'Divide Circle Into 12 Parts',d:'Divide the circle perimeter into 12 equal parts (0–12). Mark P at position 0 on the base.'},
+      {h:'Calculate Base Line Length',d:'Length of base = circumference = 2πr. Divide into 12 equal parts.'},
+      {h:'Mark Successive Centres',d:'As the circle rolls, its centre moves horizontally. Mark centres C₁–C₁₂ above each base division.'},
+      {h:'Draw Circle at Each Position',d:'Draw the generating circle of radius r at each centre Cᵢ.'},
+      {h:'Locate Tracing Points',d:'For each position i, the point P has rotated i×30° from the contact point. Find this point on each position circle.'},
+      {h:'Plot the Cycloid Points',d:'Mark the located point for each of the 12 positions.'},
+      {h:'Connect with Smooth Curve',d:'Join all 12 cycloid points with a smooth curve from P back to the base line to complete one arch.'},
+    ],
+    quiz:[
+      {q:'The base line length for one complete cycloid arch equals:',opts:['πr','2πr (circumference)','4r','πr²'],ans:1,exp:'One full rotation rolls out exactly one circumference = 2πr along the base line.'},
+      {q:'How many arches are formed per complete revolution of the generating circle?',opts:['Half','One','Two','Three'],ans:1,exp:'One revolution produces exactly one complete arch of the cycloid.'},
+    ],
+    drawFn:drawCycloid
+  },
+  'epicycloid':{
+    title:'Epicycloid', cat:'Cycloids', color:'var(--accent-rose)',
+    desc:'Trace the path of a point on a generating circle rolling OUTSIDE a fixed base circle.',
+    steps:[
+      {h:'Draw Base Circle & Generator',d:'Draw the base circle (radius R) and the generating circle (radius r) externally tangent to it.'},
+      {h:'Mark Tracing Point P',d:'Mark point P at the contact point of the two circles.'},
+      {h:'Divide Generating Circle',d:'Divide the generating circle into 12 equal parts.'},
+      {h:'Calculate Arc on Base Circle',d:'The arc traversed on the base circle = circumference of generating circle = 2πr. Divide this arc into 12 parts.'},
+      {h:'Mark Rolling Centre Path',d:'The centre of the generating circle traces a circle of radius (R + r). Mark 12 successive centre positions.'},
+      {h:'Draw Circle Positions',d:'Draw the generating circle at each of the 12 centre positions.'},
+      {h:'Transfer Tracing Points',d:'For each position, locate P by rotating it the same angular amount on the generating circle.'},
+      {h:'Plot Epicycloid Points',d:'Mark all 12 traced positions of point P.'},
+      {h:'Complete the Curve',d:'Join all points with a smooth closed curve to complete the epicycloid loop.'},
+    ],
+    quiz:[
+      {q:'In an epicycloid, the generating circle rolls:',opts:['Inside the base circle','Outside the base circle','Along a straight line','Inside a rectangle'],ans:1,exp:'"Epi" means outside. Epicycloid = generating circle rolls OUTSIDE the base circle.'},
+    ],
+    drawFn:drawEpicycloid
+  },
+  'hypocycloid':{
+    title:'Hypocycloid', cat:'Cycloids', color:'var(--accent-sage)',
+    desc:'Trace the path of a point on a generating circle rolling INSIDE a fixed larger base circle.',
+    steps:[
+      {h:'Draw Base & Generating Circles',d:'Draw the base circle (radius R). Draw the generating circle (radius r) inside, initially tangent at P.'},
+      {h:'Divide Generating Circle',d:'Divide the generating circle into 12 equal parts.'},
+      {h:'Calculate Arc on Base Circle',d:'Arc on base circle = 2πr. Divide this arc into 12 equal parts on the interior.'},
+      {h:'Mark Rolling Centre Path',d:'The generating circle\'s centre moves on a circle of radius (R − r). Mark 12 successive centre positions.'},
+      {h:'Draw Circle Positions',d:'Draw the generating circle at each of the 12 centre positions inside the base circle.'},
+      {h:'Locate Tracing Points',d:'For each position, find the tracing point by rotating it on the generating circle.'},
+      {h:'Plot Hypocycloid Points',d:'Mark all 12 traced positions of point P.'},
+      {h:'Special Case',d:'When r = R/2, the hypocycloid is a straight line (diameter). When r = R/4, it forms an astroid.'},
+      {h:'Complete the Curve',d:'Join all points with a smooth closed curve.'},
+    ],
+    quiz:[
+      {q:'When the generating circle radius r = R/2, the hypocycloid becomes:',opts:['A circle','An ellipse','A straight line (diameter)','A spiral'],ans:2,exp:'When r = R/2, the tracing point traces a straight line across the base circle diameter.'},
+    ],
+    drawFn:drawHypocycloid
+  },
+};
+
+// ═══ POLYGON METHODS DATA ═══
+const POLYGON_DATA={
+  pentagon:{n:5,name:'Pentagon',color:'var(--accent-blue)',
+    desc:'A regular polygon with 5 sides and 5 equal angles. Interior angle = 108°.',
+    quiz:[{q:'Interior angle of a regular pentagon?',opts:['60°','90°','108°','120°'],ans:2,exp:'(5−2)×180°/5 = 540°/5 = 108°.'}]},
+  hexagon:{n:6,name:'Hexagon',color:'var(--accent-gold)',
+    desc:'A regular polygon with 6 sides and 6 equal angles. Interior angle = 120°.',
+    quiz:[{q:'Interior angle of a regular hexagon?',opts:['60°','90°','108°','120°'],ans:3,exp:'(6−2)×180°/6 = 720°/6 = 120°.'}]},
+  heptagon:{n:7,name:'Heptagon',color:'var(--accent-sage)',
+    desc:'A regular polygon with 7 sides and 7 equal angles. Interior angle ≈ 128.57°.',
+    quiz:[{q:'Interior angle of a regular heptagon (approx)?',opts:['120°','128.57°','135°','140°'],ans:1,exp:'(7−2)×180°/7 = 900°/7 ≈ 128.57°.'}]},
+  octagon:{n:8,name:'Octagon',color:'var(--accent-teal)',
+    desc:'A regular polygon with 8 sides and 8 equal angles. Interior angle = 135°.',
+    quiz:[{q:'Interior angle of a regular octagon?',opts:['120°','128.57°','135°','140°'],ans:2,exp:'(8−2)×180°/8 = 1080°/8 = 135°.'}]},
+};
+const POLY_METHODS=['General Method','Base Angle Method','External Angle Method'];
+
+// ═══ DRAW: SVG HELPERS ═══
+function makeLine(x1,y1,x2,y2,stroke,sw=1.5,dash='',filter=''){
+  return svgNS('line',{x1,y1,x2,y2,stroke,'stroke-width':sw,'stroke-dasharray':dash,filter});
+}
+function makeCircle(cx,cy,r,stroke,fill='none',sw=1.5,filter=''){
+  return svgNS('circle',{cx,cy,r,stroke,fill,'stroke-width':sw,filter});
+}
+function makeText(x,y,txt,fill,size=11,family='Cinzel, serif',weight='400'){
+  const el=svgNS('text',{x,y,fill,'font-size':size,'font-family':family,'font-weight':weight});
+  el.textContent=txt; return el;
+}
+function makeEllipse(cx,cy,rx,ry,stroke,fill='none',sw=2,filter=''){
+  return svgNS('ellipse',{cx,cy,rx,ry,stroke,fill,'stroke-width':sw,filter});
+}
+function makePath(d,stroke,fill='none',sw=2,filter=''){
+  return svgNS('path',{d,stroke,fill,'stroke-width':sw,filter});
+}
+function polygon(pts,stroke,fill='none',sw=2,filter=''){
+  return svgNS('polygon',{points:pts.map(p=>p.join(',')).join(' '),stroke,fill,'stroke-width':sw,filter});
+}
+
+// ══ ELLIPSE CC ══
+function drawEllipseCC(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const fn=target==='svgContent'?svgNS:svgNS;
+  const A=t=>g.appendChild(t);
+  const cx=250,cy=190,a=170,b=95;
+  // Axes
+  if(step>=0){
+    A(makeLine(70,cy,430,cy,'rgba(99,179,237,0.3)',1,'6,4'));
+    A(makeLine(cx,50,cx,330,'rgba(99,179,237,0.3)',1,'6,4'));
+    A(makeText(425,cy+16,'A','rgba(99,179,237,0.8)',11,'JetBrains Mono'));
+    A(makeText(62,cy+16,'B','rgba(99,179,237,0.8)',11,'JetBrains Mono'));
+    A(makeText(cx+8,55,'C','rgba(99,179,237,0.8)',11,'JetBrains Mono'));
+    A(makeText(cx+8,cy+16,'O','rgba(99,179,237,0.5)',10,'JetBrains Mono'));
+  }
+  if(step>=1){
+    A(makeCircle(cx,cy,a,'rgba(99,179,237,0.35)','none',1.2));
+    A(makeCircle(cx,cy,b,'rgba(79,209,197,0.35)','none',1.2));
+  }
+  if(step>=2){
+    for(let i=0;i<12;i++){
+      const ang=i*Math.PI/6;
+      A(makeLine(cx,cy,cx+Math.cos(ang)*a,cy+Math.sin(ang)*a,'rgba(99,179,237,0.18)',0.7,'3,3'));
+    }
+  }
+  if(step>=3){
+    for(let i=0;i<12;i++){
+      const ang=i*Math.PI/6;
+      const ox=cx+Math.cos(ang)*a, oy=cy+Math.sin(ang)*a;
+      const ix=cx+Math.cos(ang)*b, iy=cy+Math.sin(ang)*b;
+      const px=ox, py=iy;
+      A(makeLine(ox,oy,px,py,'rgba(99,179,237,0.18)',0.8));
+      A(makeLine(ix,iy,px,py,'rgba(79,209,197,0.18)',0.8));
+      if(step>=4) A(makeCircle(px,py,3,'#63B3ED','#63B3ED',1,'url(#gs)'));
+    }
+  }
+  if(step>=5) A(makeEllipse(cx,cy,a,b,'#63B3ED','none',2.2,'url(#gs2)'));
+}
+
+// ══ ELLIPSE ARC ══
+function drawEllipseArc(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const cx=250,cy=190,a=160,b=95,c=Math.sqrt(a*a-b*b);
+  const f1x=cx-c,f2x=cx+c;
+  if(step>=0){
+    A(makeLine(70,cy,430,cy,'rgba(246,201,14,0.25)',1,'5,4'));
+    A(makeLine(cx,50,cx,330,'rgba(246,201,14,0.25)',1,'5,4'));
+  }
+  if(step>=1){
+    A(makeCircle(f1x,cy,5,'#F6C90E','#F6C90E',1,'url(#gs)'));
+    A(makeCircle(f2x,cy,5,'#F6C90E','#F6C90E',1,'url(#gs)'));
+    A(makeText(f1x-6,cy+20,'F₁','#F6C90E',10,'JetBrains Mono'));
+    A(makeText(f2x-6,cy+20,'F₂','#F6C90E',10,'JetBrains Mono'));
+    A(makeLine(cx-a,cy,cx+a,cy,'rgba(246,201,14,0.4)',1.5));
+  }
+  if(step>=2){
+    const div=5;
+    for(let i=1;i<=div;i++){
+      const r1=(cx-a)+(i*(2*c)/div);
+      const px=cx-a+i*(c/div)*2;
+      A(makeCircle(f1x-(i*c/div)*0+px*0,cy,2,'#F6C90E','#F6C90E',1));
+    }
+  }
+  if(step>=3){
+    for(let i=1;i<=6;i++){
+      const r1=(i/6)*(cx+a-f1x);
+      const r2=2*a-r1;
+      const angCos=(r1*r1+(2*c)*(2*c)-r2*r2)/(2*r1*2*c);
+      if(Math.abs(angCos)>1) continue;
+      const ang=Math.acos(angCos);
+      const px=f1x+r1*Math.cos(ang), py=cy-r1*Math.sin(ang);
+      const py2=cy+r1*Math.sin(ang);
+      A(makeCircle(f1x,cy,r1,'rgba(246,201,14,0.12)','none',0.8,'3,3'));
+      A(makeCircle(f2x,cy,r2,'rgba(99,179,237,0.12)','none',0.8,'3,3'));
+      if(step>=4){
+        A(makeCircle(px,py,3.5,'#F6C90E','#F6C90E',1,'url(#gs)'));
+        A(makeCircle(px,py2,3.5,'#F6C90E','#F6C90E',1,'url(#gs)'));
+        A(makeCircle(2*cx-px,py,3.5,'#F6C90E','#F6C90E',1,'url(#gs)'));
+        A(makeCircle(2*cx-px,py2,3.5,'#F6C90E','#F6C90E',1,'url(#gs)'));
+      }
+    }
+  }
+  if(step>=5) A(makeEllipse(cx,cy,a,b,'#F6C90E','none',2.2,'url(#gs2)'));
+}
+
+// ══ ELLIPSE OBLONG ══
+function drawEllipseOb(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const x0=55,y0=60,w=390,h=180,cx=x0+w/2,cy=y0+h/2;
+  if(step>=0){
+    A(svgNS('rect',{x:x0,y:y0,width:w,height:h,fill:'none',stroke:'rgba(104,211,145,0.3)','stroke-width':1.5,'stroke-dasharray':'6,4'}));
+  }
+  if(step>=1){
+    A(makeLine(x0,cy,x0+w,cy,'rgba(104,211,145,0.3)',1,'4,3'));
+    A(makeLine(cx,y0,cx,y0+h,'rgba(104,211,145,0.3)',1,'4,3'));
+  }
+  const n=4;
+  if(step>=2){
+    for(let i=1;i<=n;i++){
+      const px=cx+i*(w/2)/n;
+      A(makeLine(px,cy-8,px,cy+8,'rgba(104,211,145,0.5)',1.2));
+      A(makeLine(x0+i*(w/n),y0-8,x0+i*(w/n),y0+8,'rgba(104,211,145,0.5)',1.2));
+    }
+  }
+  if(step>=3){
+    for(let i=1;i<=n;i++){
+      const px=cx+i*(w/2)/n;
+      const tp=x0+w*(i/n);
+      const m1=(cy-y0)/(px-cx);const b1=y0-m1*cx;
+      const m2=(y0-cy)/(tp-cx);const b2=cy-m2*cx;
+      const xi=(b2-b1)/(m1-m2);const yi=m1*xi+b1;
+      A(makeLine(cx,y0,px,cy,'rgba(104,211,145,0.18)',0.8));
+      A(makeLine(cx,cy,tp,y0,'rgba(104,211,145,0.18)',0.8));
+      if(step>=4){
+        [[xi,yi],[x0+w-(xi-x0),yi],[xi,y0+h-(yi-y0)],[x0+w-(xi-x0),y0+h-(yi-y0)]].forEach(([x,y])=>{
+          A(makeCircle(x,y,3,'#68D391','#68D391',1,'url(#gs)'));
+        });
+      }
+    }
+  }
+  if(step>=5) A(makeEllipse(cx,cy,w/2,h/2,'#68D391','none',2.2,'url(#gs2)'));
+}
+
+// ══ PARABOLA RECT ══
+function drawParabolaRect(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const x0=60,y0=40,w=380,h=290;
+  if(step>=0){
+    A(svgNS('rect',{x:x0,y:y0,width:w,height:h,fill:'none',stroke:'rgba(252,129,129,0.25)','stroke-width':1.5,'stroke-dasharray':'5,4'}));
+    A(makeText(x0+w/2-10,y0+h+22,'Axis of Symmetry','rgba(252,129,129,0.5)',10,'JetBrains Mono'));
+  }
+  if(step>=1){
+    A(makeLine(x0+w/2,y0,x0+w/2,y0+h,'rgba(252,129,129,0.3)',1,'4,3'));
+    A(makeCircle(x0+w/2,y0+h,4,'#FC8181','#FC8181',1,'url(#gs)'));
+    A(makeText(x0+w/2+8,y0+h-8,'V','#FC8181',11,'JetBrains Mono'));
+  }
+  const pts=[];
+  if(step>=2){
+    const n=4;
+    for(let i=1;i<=n;i++){
+      const xi=x0+i*(w/n);
+      A(makeLine(xi,y0,xi,y0+h,'rgba(252,129,129,0.15)',0.8,'3,3'));
+    }
+  }
+  if(step>=4){
+    const cx=x0+w/2, base=y0+h;
+    for(let t=-3.8;t<=3.8;t+=0.15){
+      const x=cx+t*(w/2)/4;
+      const y=base-(t*t)*(h/16);
+      pts.push([x,y]);
+      if(step>=5 && Math.abs(t-Math.round(t))<0.1 && t!==0){
+        A(makeCircle(x,y,3.5,'#FC8181','#FC8181',1,'url(#gs)'));
+      }
+    }
+  }
+  if(step>=6 && pts.length>1){
+    const d='M '+pts.map(p=>p.join(' ')).join(' L ');
+    A(makePath(d,'#FC8181','none',2.2,'url(#gs2)'));
+  }
+}
+
+// ══ PARABOLA TANG ══
+function drawParabolaTang(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const ax=70,bx=430,y=340,vx=250,vy=50;
+  if(step>=0){
+    A(makeLine(ax,y,bx,y,'rgba(246,201,14,0.5)',2));
+    A(makeText(ax-15,y+15,'A','#F6C90E',11,'JetBrains Mono'));
+    A(makeText(bx+5,y+15,'B','#F6C90E',11,'JetBrains Mono'));
+  }
+  if(step>=1){
+    A(makeLine(ax,y,vx,vy,'rgba(246,201,14,0.4)',1.5));
+    A(makeLine(bx,y,vx,vy,'rgba(246,201,14,0.4)',1.5));
+    A(makeCircle(vx,vy,4,'#F6C90E','#F6C90E',1,'url(#gs)'));
+    A(makeText(vx+8,vy-8,'V','#F6C90E',11,'JetBrains Mono'));
+  }
+  const n=8;
+  if(step>=2){
+    for(let i=1;i<n;i++){
+      const t=i/n;
+      const lx=ax+(vx-ax)*t, ly=y+(vy-y)*t;
+      const rx=bx+(vx-bx)*t, ry=y+(vy-y)*t;
+      A(makeCircle(lx,ly,2,'rgba(246,201,14,0.5)','rgba(246,201,14,0.5)',1));
+      A(makeCircle(rx,ry,2,'rgba(246,201,14,0.5)','rgba(246,201,14,0.5)',1));
+    }
+  }
+  if(step>=3){
+    for(let i=1;i<n;i++){
+      const t=i/n;
+      const lx=ax+(vx-ax)*t, ly=y+(vy-y)*t;
+      const rx=bx+(vx-bx)*t, ry=y+(vy-y)*t;
+      A(makeLine(lx,ly,rx,ry,'rgba(246,201,14,0.25)',0.8));
+    }
+  }
+  if(step>=5){
+    const pts=[];
+    for(let t=0;t<=1;t+=0.025){
+      const x=ax*(1-t)*(1-t)+2*vx*t*(1-t)+bx*t*t;
+      const yy=y*(1-t)*(1-t)+2*vy*t*(1-t)+y*t*t;
+      pts.push([x,yy]);
+    }
+    const d='M '+pts.map(p=>p.join(' ')).join(' L ');
+    A(makePath(d,'#F6C90E','none',2.5,'url(#gs2)'));
+  }
+}
+
+// ══ HYPERBOLA GEN ══
+function drawHyperbolaGen(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  if(step>=0){
+    A(makeLine(90,20,90,360,'#4FD1C5',2));
+    A(makeText(50,18,'Directrix','rgba(79,209,197,0.6)',9,'JetBrains Mono'));
+    A(makeLine(70,190,430,190,'rgba(79,209,197,0.4)',1.5,'5,4'));
+    A(makeText(360,205,'Axis','rgba(79,209,197,0.5)',9,'JetBrains Mono'));
+  }
+  const fx=260,fy=190;
+  if(step>=1){
+    A(makeCircle(fx,fy,5,'#4FD1C5','#4FD1C5',1,'url(#gs)'));
+    A(makeText(fx+9,fy+5,'F','#4FD1C5',11,'JetBrains Mono'));
+    A(makeCircle(175,fy,4,'rgba(79,209,197,0.6)','rgba(79,209,197,0.3)',1));
+    A(makeText(178,fy-9,'V','rgba(79,209,197,0.8)',11,'JetBrains Mono'));
+  }
+  if(step>=3){
+    for(let i=-4;i<=4;i++){
+      if(i===0) continue;
+      A(makeLine(70,fy+i*38,430,fy+i*38,'rgba(79,209,197,0.15)',0.7,'3,3'));
+    }
+  }
+  const pts1=[],pts2=[];
+  if(step>=5){
+    for(let t=-3.8;t<=3.8;t+=0.1){
+      const y=fy+t*38;
+      const d=Math.abs(y-90); // distance from directrix
+      const e=1.4;
+      const x=90+d*e+30;
+      if(x>90&&x<420){pts1.push([x,y]);pts2.push([90-(x-90)*0.3+50,y]);}
+    }
+    if(step>=6){
+      pts1.slice(0,Math.min((step-4)*15,pts1.length)).forEach(([x,y])=>{
+        A(makeCircle(x,y,2.5,'#4FD1C5','#4FD1C5',1,'url(#gs)'));
+      });
+    }
+  }
+  if(step>=7&&pts1.length>2){
+    const d1='M '+pts1.map(p=>p.join(' ')).join(' L ');
+    A(makePath(d1,'#4FD1C5','none',2.2,'url(#gs2)'));
+  }
+}
+
+// ══ HYPERBOLA RECT ══
+function drawHyperbolaRect(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const ox=70,oy=340;
+  if(step>=0){
+    A(makeLine(ox,oy,430,oy,'#63B3ED',2));
+    A(makeLine(ox,oy,ox,30,'#63B3ED',2));
+    A(makeText(415,oy+16,'X','#63B3ED',12,'JetBrains Mono'));
+    A(makeText(ox+8,28,'Y','#63B3ED',12,'JetBrains Mono'));
+    A(makeText(ox+6,oy+16,'O','rgba(99,179,237,0.5)',11,'JetBrains Mono'));
+  }
+  if(step>=1){
+    A(makeCircle(ox+90,oy-120,4,'#63B3ED','#63B3ED',1,'url(#gs)'));
+    A(makeText(ox+94,oy-124,'P(x₁,y₁)','rgba(99,179,237,0.8)',9,'JetBrains Mono'));
+    A(makeLine(ox+90,oy,ox+90,oy-120,'rgba(99,179,237,0.2)',0.8,'3,3'));
+    A(makeLine(ox,oy-120,ox+90,oy-120,'rgba(99,179,237,0.2)',0.8,'3,3'));
+    A(makeText(ox+150,oy-80,'xy = c²','rgba(99,179,237,0.6)',13,'Cinzel, serif','600'));
+  }
+  const pts=[];
+  if(step>=2){
+    const c2=90*120;
+    for(let x=30;x<=360;x+=3){
+      const y=c2/x;
+      if(y<310&&y>10) pts.push([ox+x,oy-y]);
+    }
+    if(step>=3){
+      [50,90,140,200,280].forEach(x=>{
+        const y=c2/x;
+        if(y<310){
+          A(makeCircle(ox+x,oy-y,4,'#63B3ED','#63B3ED',1,'url(#gs)'));
+          A(makeLine(ox+x,oy,ox+x,oy-y,'rgba(99,179,237,0.12)',0.8,'2,3'));
+          A(makeLine(ox,oy-y,ox+x,oy-y,'rgba(99,179,237,0.12)',0.8,'2,3'));
+        }
+      });
+    }
+  }
+  if(step>=4&&pts.length>2){
+    const d='M '+pts.map(p=>p.join(' ')).join(' L ');
+    A(makePath(d,'#63B3ED','none',2.2,'url(#gs2)'));
+  }
+}
+
+// ══ PLAIN SCALE ══
+function drawPlainScale(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const x0=50,y0=140,w=400,h=60,n=5,sw=w/n;
+  if(step>=0){
+    A(makeText(x0,y0-28,'RF = 1 : 50,000','rgba(99,179,237,0.7)',11,'JetBrains Mono'));
+    A(makeText(x0,y0-14,'Maximum distance = 5 km','rgba(99,179,237,0.5)',10,'JetBrains Mono'));
+  }
+  if(step>=1){
+    A(svgNS('rect',{x:x0,y:y0,width:w,height:h,fill:'rgba(99,179,237,0.04)',stroke:'#63B3ED','stroke-width':2}));
+  }
+  if(step>=2){
+    for(let i=0;i<=n;i++){
+      const px=x0+i*sw;
+      A(makeLine(px,y0,px,y0+h,'#63B3ED',i===0||i===n?2:1.2));
+      const t=makeText(px-(i===0?4:8),y0+h+18,String(i),'rgba(99,179,237,0.8)',11,'JetBrains Mono');
+      A(t);
+    }
+    A(makeText(x0+w/2-30,y0+h+32,'KILOMETRES','rgba(99,179,237,0.5)',9,'JetBrains Mono'));
+  }
+  if(step>=3){
+    const subN=10, subW=sw/subN;
+    for(let i=0;i<=subN;i++){
+      const px=x0-i*subW;
+      const lh=i%5===0?h:h/2;
+      A(makeLine(px,y0+h-lh,px,y0+h,'rgba(99,179,237,0.6)',i%5===0?1.5:0.8));
+    }
+    A(makeText(x0-subN*subW-10,y0+h+18,'100','rgba(99,179,237,0.8)',11,'JetBrains Mono'));
+    A(makeText(x0-subN*subW/2-18,y0+h+32,'METRES','rgba(99,179,237,0.5)',9,'JetBrains Mono'));
+    A(svgNS('rect',{x:x0-subN*subW,y:y0,width:subN*subW,height:h,fill:'none',stroke:'rgba(99,179,237,0.4)','stroke-width':1}));
+  }
+  if(step>=4){
+    for(let i=0;i<n;i+=2){
+      A(svgNS('rect',{x:x0+i*sw,y:y0,width:sw,height:h/2,fill:'rgba(99,179,237,0.15)'}));
+    }
+    const subN=10,subW=sw/subN;
+    for(let i=0;i<subN;i+=2){
+      A(svgNS('rect',{x:x0-(i+1)*subW,y:y0+h/2,width:subW,height:h/2,fill:'rgba(99,179,237,0.15)'}));
+    }
+  }
+  if(step>=5){
+    A(makeText(x0+w/2-38,y0-44,'PLAIN SCALE','#63B3ED',14,'Cinzel, serif','700'));
+    A(makeLine(x0,y0-54,x0+w,y0-54,'rgba(99,179,237,0.2)',1));
+  }
+}
+
+// ══ DIAGONAL SCALE ══
+function drawDiagScale(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const x0=50,y0=40,w=400,h=200,n=4,rows=10;
+  const rh=h/rows;
+  if(step>=0){
+    A(makeText(x0,y0-16,'DIAGONAL SCALE — RF = 1:500','rgba(246,201,14,0.7)',11,'JetBrains Mono'));
+  }
+  if(step>=1){
+    A(svgNS('rect',{x:x0,y:y0,width:w,height:h,fill:'rgba(246,201,14,0.02)',stroke:'#F6C90E','stroke-width':2}));
+  }
+  if(step>=2){
+    for(let i=0;i<=n;i++){
+      const px=x0+i*(w/n);
+      A(makeLine(px,y0,px,y0+h,'rgba(246,201,14,0.45)',i===0||i===n?2:1));
+      if(i>0) A(makeText(px-10,y0+h+18,String(i),'rgba(246,201,14,0.8)',11,'JetBrains Mono'));
+    }
+    A(makeText(x0-8,y0+h+18,'0','rgba(246,201,14,0.8)',11,'JetBrains Mono'));
+  }
+  const subN=10, subW=(w/n)/subN;
+  if(step>=3){
+    for(let i=0;i<=subN;i++){
+      const px=x0-i*subW;
+      A(makeLine(px,y0,px,y0+h,'rgba(246,201,14,0.3)',i%5===0?1.2:0.6));
+    }
+    A(makeText(x0-subN*subW-12,y0+h+18,'10','rgba(246,201,14,0.8)',10,'JetBrains Mono'));
+  }
+  if(step>=4){
+    for(let r=0;r<=rows;r++){
+      const py=y0+r*rh;
+      A(makeLine(x0-subN*subW,py,x0+w,py,'rgba(246,201,14,0.22)',r===0||r===rows?1.5:0.6));
+      if(r<rows) A(makeText(x0+w+8,py+rh/2+4,String(rows-r),'rgba(246,201,14,0.5)',9,'JetBrains Mono'));
+    }
+  }
+  if(step>=5){
+    for(let i=0;i<subN;i++){
+      const x1=x0-i*subW, x2=x0-(i+1)*subW;
+      for(let r=0;r<rows;r++){
+        const py1=y0+r*rh, py2=y0+(r+1)*rh;
+        A(makeLine(x1,py2,x2,py1,'rgba(246,201,14,0.55)',0.9));
+      }
+    }
+  }
+  if(step>=6){
+    const rx=x0+(w/n)-3*subW, ry=y0+4*rh;
+    A(makeCircle(rx,ry,5,'#F6C90E','#F6C90E',1,'url(#gs)'));
+    A(makeText(rx+9,ry+5,'Reading Point','rgba(246,201,14,0.7)',9,'JetBrains Mono'));
+  }
+}
+
+// ══ CYCLOID ══
+function drawCycloid(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const r=55,n=12,x0=50,by=300;
+  if(step>=0){
+    A(makeLine(30,by,470,by,'rgba(99,179,237,0.45)',2));
+    A(makeText(30,by+16,'Base Line','rgba(99,179,237,0.5)',9,'JetBrains Mono'));
+  }
+  if(step>=1){
+    A(makeCircle(x0,by-r,r,'rgba(99,179,237,0.35)','none',1.5,'4,4'));
+    A(makeCircle(x0,by,4,'#63B3ED','#63B3ED',1,'url(#gs)'));
+    A(makeText(x0+7,by-5,'P₀','#63B3ED',10,'JetBrains Mono'));
+  }
+  const totalW=2*Math.PI*r, sw=totalW/n;
+  if(step>=2){
+    for(let i=0;i<=n;i++){
+      const px=x0+i*sw;
+      A(makeLine(px,by-5,px,by+5,'rgba(99,179,237,0.4)',1));
+    }
+  }
+  const pts=[];
+  for(let i=0;i<=n;i++){
+    const ang=-Math.PI/2+i*2*Math.PI/n;
+    const pcx=x0+i*sw;
+    pts.push([pcx+r*Math.cos(ang),by-r+r*Math.sin(ang),pcx]);
+  }
+  if(step>=3){
+    for(let i=0;i<=Math.min(step-2,n);i++){
+      const [px,py,pcx]=pts[i];
+      if(step>=5) A(makeCircle(pcx,by-r,r,'rgba(99,179,237,0.1)','none',0.8,'3,3'));
+      if(step>=6){
+        A(makeCircle(px,py,3.5,'#63B3ED','#63B3ED',1,'url(#gs)'));
+        A(makeLine(pcx,by-r,px,py,'rgba(99,179,237,0.2)',0.8));
+      }
+    }
+  }
+  if(step>=7){
+    const d='M '+pts.map(([x,y])=>`${x} ${y}`).join(' L ');
+    A(makePath(d,'#63B3ED','none',2.5,'url(#gs2)'));
+  }
+}
+
+// ══ EPICYCLOID ══
+function drawEpicycloid(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const R=100,r=50,cx=220,cy=210;
+  if(step>=0) A(makeCircle(cx,cy,R,'rgba(252,129,129,0.35)','none',2));
+  if(step>=1){
+    A(makeCircle(cx+R+r,cy,r,'rgba(99,179,237,0.35)','none',1.5,'4,4'));
+    A(makeCircle(cx+R+2*r,cy,4,'#FC8181','#FC8181',1,'url(#gs)'));
+    A(makeText(cx+R+2*r+7,cy+5,'P','#FC8181',11,'JetBrains Mono'));
+  }
+  if(step>=3) A(makeCircle(cx,cy,R+r,'rgba(99,179,237,0.1)','none',0.8,'3,3'));
+  const n=12,pts=[];
+  for(let i=0;i<=n*2;i++){
+    const t=i*2*Math.PI/(n*2);
+    pts.push([cx+(R+r)*Math.cos(t)-r*Math.cos((R+r)*t/r),cy+(R+r)*Math.sin(t)-r*Math.sin((R+r)*t/r)]);
+  }
+  if(step>=5){
+    pts.slice(0,Math.min((step-3)*4+1,pts.length)).forEach(([px,py])=>{
+      A(makeCircle(px,py,3,'#FC8181','#FC8181',1,'url(#gs)'));
+    });
+  }
+  if(step>=8){
+    const d='M '+pts.map(([x,y])=>`${x} ${y}`).join(' L ')+' Z';
+    A(makePath(d,'#FC8181','rgba(252,129,129,0.04)',2.2,'url(#gs2)'));
+  }
+}
+
+// ══ HYPOCYCLOID ══
+function drawHypocycloid(step,target='svgContent'){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const R=140,r=46,cx=250,cy=195;
+  if(step>=0) A(makeCircle(cx,cy,R,'rgba(104,211,145,0.3)','none',2));
+  if(step>=1){
+    A(makeCircle(cx,cy-R+r,r,'rgba(99,179,237,0.35)','none',1.5,'4,4'));
+    A(makeCircle(cx,cy-R,5,'#68D391','#68D391',1,'url(#gs)'));
+    A(makeText(cx+8,cy-R,'P','#68D391',11,'JetBrains Mono'));
+  }
+  if(step>=3) A(makeCircle(cx,cy,R-r,'rgba(104,211,145,0.15)','none',0.8,'3,3'));
+  const pts=[];
+  for(let i=0;i<=n*2;i++){
+    const t=i*2*Math.PI/(n*2),n=12;
+    pts.push([cx+(R-r)*Math.cos(t)+r*Math.cos((R-r)*t/r),cy+(R-r)*Math.sin(t)+r*Math.sin((R-r)*t/r)]);
+  }
+  if(step>=5){
+    pts.slice(0,Math.min((step-3)*4+1,pts.length)).forEach(([px,py])=>{
+      A(makeCircle(px,py,3,'#68D391','#68D391',1,'url(#gs)'));
+    });
+  }
+  if(step>=8){
+    const d='M '+pts.map(([x,y])=>`${x} ${y}`).join(' L ')+' Z';
+    A(makePath(d,'#68D391','rgba(104,211,145,0.04)',2.2,'url(#gs2)'));
+  }
+}
+
+// ═══ POLYGON DRAW FUNCTIONS ═══
+function drawPolygonGeneral(step, n, target){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const col=['#63B3ED','#F6C90E','#68D391','#4FD1C5'][n-5]||'#63B3ED';
+  const intAng=(n-2)*180/n;
+  const ax=140,bx=310,y=300,side=170;
+  // Base line
+  if(step>=0){
+    A(makeLine(ax,y,bx,y,col,2));
+    A(makeText(ax-16,y+16,'A',col,11,'JetBrains Mono'));
+    A(makeText(bx+6,y+16,'B',col,11,'JetBrains Mono'));
+  }
+  // Semicircle
+  if(step>=1){
+    const r=side/2,ccx=(ax+bx)/2;
+    const d=`M ${ax} ${y} A ${r} ${r} 0 0 1 ${bx} ${y}`;
+    A(makePath(d,`${col}88`,'none',1.5));
+  }
+  // Division points on semicircle
+  if(step>=2){
+    const r=side/2,ccx=(ax+bx)/2;
+    for(let i=0;i<=n;i++){
+      const ang=Math.PI*i/n;
+      const px=ccx-r*Math.cos(ang), py=y-r*Math.sin(ang);
+      A(makeCircle(px,py,3,col,col,1));
+    }
+  }
+  // Line through point 2 (for n-gon)
+  if(step>=3){
+    const r=side/2,ccx=(ax+bx)/2;
+    const ang=Math.PI*2/n;
+    const px=ccx-r*Math.cos(ang), py=y-r*Math.sin(ang);
+    A(makeLine(ax,y,px+(px-ax)*2,py+(py-y)*2,`${col}55`,1,'4,3'));
+    A(makeCircle(px,py,4,col,col,1,'url(#pgs)'));
+    A(makeText(px+7,py-6,'2',col,10,'JetBrains Mono'));
+  }
+  // Draw the full polygon
+  if(step>=4){
+    const R=100;
+    const pCx=225,pCy=185;
+    const pts=Array.from({length:n},(_,i)=>{
+      const a=-Math.PI/2+i*2*Math.PI/n;
+      return [pCx+R*Math.cos(a),pCy+R*Math.sin(a)];
+    });
+    const d='M '+pts.map(p=>p.join(' ')).join(' L ')+' Z';
+    A(svgNS('path',{d,fill:`${col}08`,stroke:col,'stroke-width':2.5,filter:'url(#pgs)'}));
+    pts.forEach(([px,py])=>A(makeCircle(px,py,4,col,col,1,'url(#pgs)')));
+    A(makeCircle(pCx,pCy,R,`${col}22`,'none',0.8,'3,3'));
+    A(makeCircle(pCx,pCy,3,`${col}66`,`${col}66`,1));
+  }
+}
+
+function drawPolygonBaseAngle(step, n, target){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const col=['#63B3ED','#F6C90E','#68D391','#4FD1C5'][n-5]||'#63B3ED';
+  const intAng=(n-2)*180/n;
+  const side=120,ax=160,bx=ax+side,y=320;
+  if(step>=0){
+    A(makeLine(ax-20,y,bx+40,y,col,2));
+    A(makeText(ax-16,y+16,'A',col,11,'JetBrains Mono'));
+    A(makeText(bx+8,y+16,'B',col,11,'JetBrains Mono'));
+  }
+  if(step>=1){
+    A(makeLine(ax,y,bx,y,col,2.5));
+    A(makeText((ax+bx)/2-10,y+16,`Side = given`,`${col}99`,9,'JetBrains Mono'));
+  }
+  if(step>=2){
+    A(makeText(ax+26,y-22,intAng.toFixed(1)+'°',col,10,'JetBrains Mono'));
+    const arcR=28;
+    A(makePath(`M ${ax+arcR} ${y} A ${arcR} ${arcR} 0 0 1 ${ax+arcR*Math.cos(-intAng*Math.PI/180)} ${y+arcR*Math.sin(-intAng*Math.PI/180)}`,`${col}88`,'none',1.5));
+  }
+  if(step>=3){
+    const pts=[[ax,y],[bx,y]];
+    let cx_=ax,cy_=y,ang=0;
+    for(let i=0;i<n-1;i++){
+      const nx=cx_+side*Math.cos(ang);
+      const ny=cy_+side*Math.sin(ang);
+      pts.push([nx,ny]);
+      ang-=(Math.PI-intAng*Math.PI/180);
+      cx_=nx;cy_=ny;
+    }
+    const shown=pts.slice(0,Math.min(step+1,n+1));
+    const d='M '+shown.map(p=>p.join(' ')).join(' L ')+(step>=n?' Z':'');
+    A(svgNS('path',{d,fill:step>=n?`${col}08`:'none',stroke:col,'stroke-width':2.5,filter:'url(#pgs)'}));
+    shown.forEach(([px,py])=>A(makeCircle(px,py,4,col,col,1,'url(#pgs)')));
+  }
+}
+
+function drawPolygonExtAngle(step, n, target){
+  const g=document.getElementById(target);g.innerHTML='';
+  const A=t=>g.appendChild(t);
+  const col=['#63B3ED','#F6C90E','#68D391','#4FD1C5'][n-5]||'#63B3ED';
+  const extAng=360/n;
+  const R=130,cx=250,cy=195;
+  if(step>=0){
+    A(makeCircle(cx,cy,R,`${col}33`,'none',1.5,'5,4'));
+    A(makeCircle(cx,cy,3,`${col}66`,`${col}44`,1));
+  }
+  if(step>=1){
+    A(makeText(cx-80,cy+R+30,`Central angle = ${extAng.toFixed(1)}°`,`${col}88`,10,'JetBrains Mono'));
+  }
+  const pts=Array.from({length:n},(_,i)=>{
+    const a=-Math.PI/2+i*2*Math.PI/n;
+    return [cx+R*Math.cos(a),cy+R*Math.sin(a)];
+  });
+  if(step>=2){
+    pts.forEach(([px,py],i)=>{
+      if(i<=Math.min(step,n-1)){
+        A(makeCircle(px,py,5,col,col,1,'url(#pgs)'));
+        A(makeLine(cx,cy,px,py,`${col}22`,0.8,'3,3'));
+      }
+    });
+  }
+  if(step>=4){
+    const d='M '+pts.map(p=>p.join(' ')).join(' L ')+' Z';
+    A(svgNS('path',{d,fill:`${col}07`,stroke:col,'stroke-width':2.5,filter:'url(#pgs)'}));
+  }
+}
+
+// ═══ TOPIC DISPLAY ═══
+let curTopicId=null, curStep=0, totalSteps=0, playing=false, playTimer=null;
+let curQuizData=[], curQuizIdx=0, quizAnswered=false;
+
+function showTopic(id){
+  const data=TOPICS[id];
+  if(!data) return;
+  curTopicId=id;
+  showPage('topic-page');
+  document.getElementById('bcCat').textContent=data.cat;
+  document.getElementById('bcTopic').textContent=data.title;
+  document.getElementById('topicTitle').textContent=data.title;
+  document.getElementById('topicSub').textContent=data.desc;
+  document.getElementById('diagLabel').textContent=data.title+' — Step-by-Step';
+  // Set Watch Video button
+  const vidUrl=TOPIC_VIDEOS[id]||'https://www.youtube.com/@ezedchannel';
+  const wvBtn=document.getElementById('watchVideoBtn');
+  wvBtn.href=vidUrl; wvBtn.style.display='inline-flex';
+  // Build steps with Watch Video button on each
+  const sc=document.getElementById('stepsContainer');sc.innerHTML='';
+  data.steps.forEach((s,i)=>{
+    const div=document.createElement('div');
+    div.className='step-item'+(i===0?' active':'');
+    div.id='si-'+i;
+    div.innerHTML=`
+      <div class="step-num">${i+1}</div>
+      <div style="flex:1">
+        <div class="step-title">${s.h}</div>
+        <div class="step-desc">${s.d}</div>
+        <a href="${vidUrl}" target="_blank" rel="noopener"
+           onclick="event.stopPropagation()"
+           style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;
+                  padding:4px 10px;border-radius:4px;font-family:'JetBrains Mono',monospace;
+                  font-size:9px;letter-spacing:1px;text-decoration:none;
+                  background:rgba(255,0,0,0.1);border:1px solid rgba(255,0,0,0.3);
+                  color:#FC8181;transition:all 0.2s"
+           onmouseover="this.style.background='rgba(255,0,0,0.18)'"
+           onmouseout="this.style.background='rgba(255,0,0,0.1)'">
+          ▶ Watch Video
+        </a>
+      </div>`;
+    div.onclick=()=>goToStep(i);
+    sc.appendChild(div);
+  });
+  totalSteps=data.steps.length;
+  curStep=0; playing=false;
+  document.getElementById('playBtn').textContent='▶ Play';
+  data.drawFn(0);
+  curQuizData=data.quiz; curQuizIdx=0; quizAnswered=false;
+  renderQuiz();
+}
+
+function goToStep(n){
+  curStep=n;
+  document.querySelectorAll('#stepsContainer .step-item').forEach((el,i)=>{
+    el.classList.remove('active','done');
+    if(i<n) el.classList.add('done');
+    else if(i===n) el.classList.add('active');
+  });
+  TOPICS[curTopicId].drawFn(n);
+  document.getElementById('si-'+n)?.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function nextStep(){if(curStep<totalSteps-1) goToStep(curStep+1);}
+function prevStep(){if(curStep>0) goToStep(curStep-1);}
+function resetAnim(){clearInterval(playTimer);playing=false;document.getElementById('playBtn').textContent='▶ Play';goToStep(0);}
+function togglePlay(){
+  playing=!playing;
+  document.getElementById('playBtn').textContent=playing?'⏸ Pause':'▶ Play';
+  if(playing){
+    const sp=6-parseInt(document.getElementById('speedSlider').value);
+    playTimer=setInterval(()=>{
+      if(curStep<totalSteps-1) nextStep();
+      else{playing=false;document.getElementById('playBtn').textContent='▶ Play';clearInterval(playTimer);}
+    },sp*500);
+  } else clearInterval(playTimer);
+}
+
+// ═══ QUIZ ═══
+function renderQuiz(){
+  if(!curQuizData.length) return;
+  const q=curQuizData[curQuizIdx%curQuizData.length];
+  document.getElementById('quizQ').textContent='Q: '+q.q;
+  const opts=document.getElementById('quizOpts');opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='quiz-opt';
+    btn.innerHTML=`<div class="quiz-dot"></div>${o}`;
+    btn.onclick=()=>answerQ(i,q.ans,q.exp,btn);
+    opts.appendChild(btn);
+  });
+  document.getElementById('quizFb').className='quiz-fb';
+  document.getElementById('quizFb').textContent='';
+  quizAnswered=false;
+}
+function answerQ(idx,ans,exp,btn){
+  if(quizAnswered) return;
+  quizAnswered=true;
+  document.querySelectorAll('#quizOpts .quiz-opt').forEach((o,i)=>{
+    if(i===ans) o.classList.add('correct');
+    else if(i===idx&&i!==ans) o.classList.add('wrong');
+  });
+  const fb=document.getElementById('quizFb');
+  fb.textContent=(idx===ans?'✓ Correct! ':'✗ Incorrect. ')+exp;
+  fb.className='quiz-fb show '+(idx===ans?'ok':'no');
+  if(idx===ans) burst(btn);
+}
+function nextQuiz(){curQuizIdx++;renderQuiz();}
+
+// ═══ POLYGON METHODS PAGE ═══
+let polyShape=null, polyMethod=0, polyCurStep=0, polyTotalSteps=0, polyPlaying=false, polyTimer=null;
+let polyQuizData=[], polyQuizIdx=0, polyQuizAnswered=false;
+
+const POLY_STEPS={
+  gm:[
+    {h:'Draw Base Side AB',d:'Draw the given base side AB horizontally.'},
+    {h:'Draw Semicircle on AB',d:'With AB as diameter, draw a semicircle above AB.'},
+    {h:'Divide Semicircle into n Parts',d:'Divide the semicircle arc into n equal parts (n = number of polygon sides).'},
+    {h:'Locate Point 2',d:'The 2nd division from A on the semicircle (for any n-gon, this sets the 2nd side direction).'},
+    {h:'Find Circumscribed Circle',d:'Bisect AB and the side A–P2 perpendicularly to find the circumcentre.'},
+    {h:'Draw Circumscribed Circle',d:'Draw a circle through A, B, and the found circumcentre.'},
+    {h:'Step Off Side Length',d:'Using a compass set to side length AB, step off all n vertices around the circle.'},
+    {h:'Connect Vertices',d:'Join all vertices to complete the regular polygon.'},
+  ],
+  ba:[
+    {h:'Calculate Interior Angle',d:'Interior angle = (n−2)×180°/n.'},
+    {h:'Draw Base Side AB',d:'Draw the first side AB of the given length.'},
+    {h:'Set Interior Angle at A',d:'At A, use a protractor to set the interior angle from AB. Mark the direction for the next side.'},
+    {h:'Mark Next Vertex',d:'Set off length AB in the direction found in step 3. This gives vertex C.'},
+    {h:'Repeat at Each Vertex',d:'At each new vertex, draw the next side at the same interior angle.'},
+    {h:'Close the Polygon',d:'Continue until all n sides are drawn and the polygon closes back at A.'},
+  ],
+  ea:[
+    {h:'Calculate Central Angle',d:'Central angle = 360°/n.'},
+    {h:'Calculate Circumradius',d:'For a side length s, circumradius R = s / (2 sin(π/n)).'},
+    {h:'Draw Circumscribed Circle',d:'Draw a circle of radius R.'},
+    {h:'Mark First Vertex',d:'Mark point P₁ anywhere on the circle.'},
+    {h:'Step Off Central Angles',d:'From P₁, step off 360°/n around the circle to mark P₂, P₃… Pₙ.'},
+    {h:'Connect Vertices',d:'Connect consecutive vertices P₁–P₂–P₃…–Pₙ–P₁ to complete the polygon.'},
+  ],
+};
+
+function showPolygonMethods(shapeName){
+  polyShape=shapeName;
+  polyMethod=0;
+  const data=POLYGON_DATA[shapeName];
+  showPage('poly-page');
+  document.getElementById('polyPageTitle').textContent=data.name;
+  document.getElementById('polyTitle').textContent=data.name+' Construction';
+  document.getElementById('polySub').textContent=data.desc;
+  // Build method tabs
+  const tabsEl=document.getElementById('polyMethodTabs');tabsEl.innerHTML='';
+  POLY_METHODS.forEach((m,i)=>{
+    const btn=document.createElement('button');
+    btn.className='method-tab'+(i===0?' active':'');
+    btn.textContent=m;
+    btn.onclick=()=>switchPolyMethod(i);
+    tabsEl.appendChild(btn);
+  });
+  loadPolyMethod(0);
+  polyQuizData=data.quiz; polyQuizIdx=0; polyQuizAnswered=false;
+  renderPolyQuiz();
+}
+
+function switchPolyMethod(idx){
+  polyMethod=idx;
+  document.querySelectorAll('.poly-method-tabs .method-tab').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  loadPolyMethod(idx);
+}
+
+function loadPolyMethod(idx){
+  const n=POLYGON_DATA[polyShape].n;
+  const methods=['gm','ba','ea'];
+  const mKey=methods[idx];
+  const steps=POLY_STEPS[mKey];
+  polyTotalSteps=steps.length; polyCurStep=0; polyPlaying=false;
+  document.getElementById('polyPlayBtn').textContent='▶ Play';
+  clearInterval(polyTimer);
+  // Set Watch Video button for this method+shape
+  const vidUrl=(POLY_VIDEOS[mKey]&&POLY_VIDEOS[mKey][polyShape])||'https://www.youtube.com/@ezedchannel';
+  const wvBtn=document.getElementById('polyWatchBtn');
+  wvBtn.href=vidUrl;
+  // Build steps with Watch Video button on each
+  const sc=document.getElementById('polyStepsContainer');sc.innerHTML='';
+  steps.forEach((s,i)=>{
+    const div=document.createElement('div');
+    div.className='step-item'+(i===0?' active':'');
+    div.id='psi-'+i;
+    div.innerHTML=`
+      <div class="step-num">${i+1}</div>
+      <div style="flex:1">
+        <div class="step-title">${s.h}</div>
+        <div class="step-desc">${s.d}</div>
+        <a href="${vidUrl}" target="_blank" rel="noopener"
+           onclick="event.stopPropagation()"
+           style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;
+                  padding:4px 10px;border-radius:4px;font-family:'JetBrains Mono',monospace;
+                  font-size:9px;letter-spacing:1px;text-decoration:none;
+                  background:rgba(255,0,0,0.1);border:1px solid rgba(255,0,0,0.3);
+                  color:#FC8181;transition:all 0.2s"
+           onmouseover="this.style.background='rgba(255,0,0,0.18)'"
+           onmouseout="this.style.background='rgba(255,0,0,0.1)'">
+          ▶ Watch Video
+        </a>
+      </div>`;
+    div.onclick=()=>goToPolyStep(i);
+    sc.appendChild(div);
+  });
+  // Draw
+  const drawFns=[drawPolygonGeneral,drawPolygonBaseAngle,drawPolygonExtAngle];
+  drawFns[idx](0,n,'polySVGContent');
+  document.getElementById('polyDiagLabel').textContent=
+    POLYGON_DATA[polyShape].name+' — '+POLY_METHODS[idx];
+}
+
+function goToPolyStep(n){
+  polyCurStep=n;
+  const shape=POLYGON_DATA[polyShape];
+  const methods=['gm','ba','ea'];
+  const idx=polyMethod;
+  document.querySelectorAll('#polyStepsContainer .step-item').forEach((el,i)=>{
+    el.classList.remove('active','done');
+    if(i<n) el.classList.add('done');
+    else if(i===n) el.classList.add('active');
+  });
+  const drawFns=[drawPolygonGeneral,drawPolygonBaseAngle,drawPolygonExtAngle];
+  drawFns[idx](n,shape.n,'polySVGContent');
+  document.getElementById('psi-'+n)?.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function polyNextStep(){if(polyCurStep<polyTotalSteps-1) goToPolyStep(polyCurStep+1);}
+function polyPrevStep(){if(polyCurStep>0) goToPolyStep(polyCurStep-1);}
+function polyResetAnim(){clearInterval(polyTimer);polyPlaying=false;document.getElementById('polyPlayBtn').textContent='▶ Play';goToPolyStep(0);}
+function polyTogglePlay(){
+  polyPlaying=!polyPlaying;
+  document.getElementById('polyPlayBtn').textContent=polyPlaying?'⏸ Pause':'▶ Play';
+  if(polyPlaying){
+    const sp=6-parseInt(document.getElementById('polySpeedSlider').value);
+    polyTimer=setInterval(()=>{
+      if(polyCurStep<polyTotalSteps-1) polyNextStep();
+      else{polyPlaying=false;document.getElementById('polyPlayBtn').textContent='▶ Play';clearInterval(polyTimer);}
+    },sp*500);
+  } else clearInterval(polyTimer);
+}
+
+// ═══ POLYGON QUIZ ═══
+function renderPolyQuiz(){
+  if(!polyQuizData.length) return;
+  const q=polyQuizData[polyQuizIdx%polyQuizData.length];
+  document.getElementById('polyQuizQ').textContent='Q: '+q.q;
+  const opts=document.getElementById('polyQuizOpts');opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='quiz-opt';
+    btn.innerHTML=`<div class="quiz-dot"></div>${o}`;
+    btn.onclick=()=>answerPolyQ(i,q.ans,q.exp,btn);
+    opts.appendChild(btn);
+  });
+  document.getElementById('polyQuizFb').className='quiz-fb';
+  polyQuizAnswered=false;
+}
+function answerPolyQ(idx,ans,exp,btn){
+  if(polyQuizAnswered) return;
+  polyQuizAnswered=true;
+  document.querySelectorAll('#polyQuizOpts .quiz-opt').forEach((o,i)=>{
+    if(i===ans) o.classList.add('correct');
+    else if(i===idx&&i!==ans) o.classList.add('wrong');
+  });
+  const fb=document.getElementById('polyQuizFb');
+  fb.textContent=(idx===ans?'✓ Correct! ':'✗ Incorrect. ')+exp;
+  fb.className='quiz-fb show '+(idx===ans?'ok':'no');
+  if(idx===ans) burst(btn);
+}
+function polyNextQuiz(){polyQuizIdx++;renderPolyQuiz();}
+
+// ═══ BURST ═══
+function burst(el){
+  const rect=el.getBoundingClientRect();
+  const cols=['#63B3ED','#68D391','#F6C90E','#4FD1C5'];
+  for(let i=0;i<14;i++){
+    const p=document.createElement('div');
+    p.className='burst-p';
+    const ang=Math.random()*360,dist=35+Math.random()*55,c=cols[i%4];
+    p.style.cssText=`left:${rect.left+rect.width/2}px;top:${rect.top+rect.height/2}px;background:${c};--tx:${Math.cos(ang*Math.PI/180)*dist}px;--ty:${Math.sin(ang*Math.PI/180)*dist}px`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),750);
+  }
+}
+
+// ═══ STAT COUNTERS ═══
+function animCount(id,target){
+  let n=0;const step=target/35;
+  const t=setInterval(()=>{
+    n+=step; if(n>=target){document.getElementById(id).textContent=target;clearInterval(t);}
+    else document.getElementById(id).textContent=Math.floor(n);
+  },30);
+}
+setTimeout(()=>{animCount('sn1',12);animCount('sn2',18);animCount('sn3',96);},400);
+</script>
+</body>
+</html>
